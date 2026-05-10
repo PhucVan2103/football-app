@@ -1,0 +1,9 @@
+/* @tailwind base;*/
+/* @tailwind components;*/
+/* @tailwind utilities;*/
+@import "tailwindcss";
+
+/* Thêm màu nền cho body giống app */
+body {
+  background-color: #e4e4e7; /* zinc-200 */
+}
