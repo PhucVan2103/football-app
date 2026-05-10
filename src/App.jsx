@@ -11,13 +11,13 @@ import {
   MoreVertical,
   Calendar as CalendarIcon,
   Activity,
-  Zap,
-  Settings,
   Star,
-  ChevronRight,
-  LogOut,
-  Swords,
-  Medal
+  AlignLeft,
+  Users,
+  Cpu,
+  BarChart2,
+  Flag,
+  ArrowRightLeft
 } from 'lucide-react';
 
 // ==========================================
@@ -106,19 +106,22 @@ const dynamicDatesData = generateDates();
 
 // Dữ liệu giả (Mock)
 const mockScheduleData = [
-  { id: 1035048, time: '20:00', league: 'Premier League', teamA: 'Man United', teamB: 'Arsenal', score: '1 - 1', status: 'FT', isLive: false },
+  { id: 1035048, time: '20:00', league: 'Premier League', teamA: 'West Ham', teamB: 'Arsenal', score: '0 - 0', status: "38'", isLive: true },
   { id: 1035049, time: '22:30', league: 'Premier League', teamA: 'Man City', teamB: 'Liverpool', score: '0 - 0', status: 'Sắp đá', isLive: false }
 ];
 
 const mockTeamALineup = [{ id: 'a1', name: 'De Gea', number: '1', top: '90%', left: '50%' }, { id: 'a2', name: 'Dalot', number: '20', top: '78%', left: '20%' }, { id: 'a3', name: 'Varane', number: '19', top: '78%', left: '50%' }, { id: 'a4', name: 'Shaw', number: '23', top: '78%', left: '80%' }, { id: 'a6', name: 'Casemiro', number: '18', top: '65%', left: '35%' }, { id: 'a7', name: 'Eriksen', number: '14', top: '65%', left: '65%' }, { id: 'a9', name: 'Antony', number: '21', top: '50%', left: '20%' }, { id: 'a10', name: 'Fernandes', number: '8', top: '50%', left: '50%' }, { id: 'a11', name: 'Rashford', number: '10', top: '50%', left: '80%' }, { id: 'a12', name: 'Martial', number: '9', top: '35%', left: '50%' }];
 const mockTeamBLineup = [{ id: 'b1', name: 'Ramsdale', number: '1', top: '10%', left: '50%' }, { id: 'b2', name: 'White', number: '4', top: '22%', left: '20%' }, { id: 'b3', name: 'Saliba', number: '12', top: '22%', left: '50%' }, { id: 'b4', name: 'Gabriel', number: '6', top: '22%', left: '80%' }, { id: 'b6', name: 'Partey', number: '5', top: '35%', left: '35%' }, { id: 'b7', name: 'Xhaka', number: '34', top: '35%', left: '65%' }, { id: 'b9', name: 'Saka', number: '7', top: '50%', left: '20%' }, { id: 'b10', name: 'Odegaard', number: '8', top: '50%', left: '50%' }, { id: 'b11', name: 'Martinelli', number: '11', top: '50%', left: '80%' }, { id: 'b12', name: 'Jesus', number: '9', top: '65%', left: '50%' }];
-const mockTimelineEvents = [{ id: 0, time: "90+5'", type: 'goal', player: 'Rashford', assist: 'Fernandes', detail: 'Siêu phẩm', side: 'left', isRecent: true }];
+const mockTimelineEvents = [
+  { id: 0, time: "38'", type: 'yellow_card', player: 'Summerville', detail: 'Phạm lỗi', side: 'left', isRecent: false },
+  { id: 1, time: "34'", type: 'yellow_card', player: 'Castellanos', detail: 'Phạm lỗi', side: 'left', isRecent: false },
+  { id: 2, time: "28'", type: 'sub', playerIn: 'Zubimendi', playerOut: 'White', side: 'right', isRecent: false },
+];
 const mockStatsData = [{ label: 'Số cú sút', a: 14, b: 9 }, { label: 'Sút trúng đích', a: 6, b: 3 }, { label: 'Chuyền bóng', a: 540, b: 320 }, { label: 'Tỷ lệ chuyền', a: 88, b: 79, format: '%' }, { label: 'Phạt góc', a: 5, b: 2 }, { label: 'Thẻ vàng', a: 1, b: 3 }];
 const topLeaguesStandings = { 'Premier League': [{ pos: 1, team: 'Arsenal', p: 38, w: 28, d: 5, l: 5, pts: 89 }] };
 const mockH2HList = ['3 - 2', '1 - 1', '0 - 2', '2 - 1', '0 - 0'];
-const mockRecentA = [{ score: '2 - 0', opp: 'Real Madrid' }, { score: '1 - 1', opp: 'Bayern' }];
-const mockRecentB = [{ score: '1 - 0', opp: 'Liverpool' }, { score: '3 - 0', opp: 'Arsenal' }];
-const mockKeyPlayers = { teamA: { name: 'Lewandowski', img: 'https://ui-avatars.com/api/?name=Robert+Lewandowski&background=1d4ed8&color=fff&size=128&bold=true', attack: 85, pass: 80, def: 30, assist: 1, goal: 1 }, teamB: { name: 'Mbappé', img: 'https://ui-avatars.com/api/?name=Kylian+Mbappe&background=1e3a8a&color=fff&size=128&bold=true', attack: 92, pass: 85, def: 20, assist: 0, goal: 2 } };
+const mockRecentA = [{ score: '2 - 0', opp: 'Real Madrid', res: 'W' }, { score: '1 - 1', opp: 'Bayern', res: 'D' }, { score: '3 - 1', opp: 'Juventus', res: 'W' }, { score: '0 - 1', opp: 'AC Milan', res: 'L' }, { score: '2 - 2', opp: 'Roma', res: 'D' }];
+const mockRecentB = [{ score: '1 - 0', opp: 'Liverpool', res: 'W' }, { score: '3 - 0', opp: 'Arsenal', res: 'W' }, { score: '1 - 2', opp: 'Chelsea', res: 'L' }, { score: '2 - 2', opp: 'Man City', res: 'D' }, { score: '4 - 1', opp: 'Tottenham', res: 'W' }];
 
 
 // ==========================================
@@ -156,7 +159,10 @@ const MatchCard = ({ item, onClick }) => {
             <span className="text-[10px] font-bold text-[#a1a1aa] uppercase tracking-wider">{item.league}</span>
           </div>
           {item.isLive ? (
-            <span className="text-[9px] font-black text-[#064e3b] bg-[#4ade80] px-2 py-0.5 rounded shadow-[0_0_8px_rgba(74,222,128,0.6)] uppercase tracking-wider">Live</span>
+            <span className="text-[9px] font-black text-[#064e3b] bg-[#4ade80] px-2 py-0.5 rounded shadow-[0_0_8px_rgba(74,222,128,0.6)] uppercase tracking-wider flex items-center gap-1">
+               <span className="w-1.5 h-1.5 bg-[#064e3b] rounded-full animate-pulse"></span>
+               {item.status}
+            </span>
           ) : (
             <span className="text-[10px] font-semibold text-[#a1a1aa] bg-[#18181b]/50 px-2 py-0.5 rounded">{item.status}</span>
           )}
@@ -192,7 +198,7 @@ const MatchCard = ({ item, onClick }) => {
 // MAIN APP COMPONENT
 // ==========================================
 const App = () => {
-  const [activeTab, setActiveTab] = useState('schedule'); 
+  const [activeTab, setActiveTab] = useState('match-detail'); 
   const [selectedMatchTab, setSelectedMatchTab] = useState('Chi tiết'); 
   const [selectedDateIndex, setSelectedDateIndex] = useState(2);
   const [selectedLeagueFilter, setSelectedLeagueFilter] = useState('Tất cả');
@@ -204,7 +210,6 @@ const App = () => {
   const [isApiLoading, setIsApiLoading] = useState(false);
   const [isStandingsLoading, setIsStandingsLoading] = useState(false);
   
-  // State mới cho dữ liệu chi tiết của một trận đấu
   const [matchDetailsData, setMatchDetailsData] = useState(null);
   const [isDetailsLoading, setIsDetailsLoading] = useState(false);
 
@@ -212,7 +217,6 @@ const App = () => {
   const [apiStandings, setApiStandings] = useState(topLeaguesStandings);
   const [apiStatus, setApiStatus] = useState(API_KEY ? 'Đang kết nối...' : 'Mock Data');
 
-  // LOGIC GỌI API LÁCH LUẬT BẰNG CÁCH CHỈ LẤY THEO DATE
   useEffect(() => {
     const fetchMatches = async () => {
       if (!API_KEY) {
@@ -225,7 +229,6 @@ const App = () => {
       try {
         const targetDate = dynamicDatesData[selectedDateIndex].fullDate;
         
-        // Gọi API KHÔNG kèm season và league để tránh bị chặn
         const response = await fetch(`https://v3.football.api-sports.io/fixtures?date=${targetDate}`, {
           method: 'GET',
           headers: { 'x-apisports-key': API_KEY }
@@ -240,7 +243,6 @@ const App = () => {
         }
 
         if (data.response) {
-          // Lọc ngầm bằng Javascript để chỉ lấy các trận Premier League (ID: 39)
           const premierLeagueMatches = data.response.filter(item => item.league.id === 39);
 
           if (premierLeagueMatches.length === 0) {
@@ -250,13 +252,13 @@ const App = () => {
             const fetchedMatches = premierLeagueMatches.map(item => {
               const isLive = ['1H', '2H', 'HT', 'ET', 'P'].includes(item.fixture.status.short);
               const statusMap = {
-                'NS': 'Sắp đá', 'FT': 'FT', 'HT': 'Nghỉ', '1H': 'Hiệp 1', '2H': 'Hiệp 2', 'CANC': 'Hủy', 'PST': 'Hoãn'
+                'NS': 'Sắp đá', 'FT': 'FT', 'HT': 'HT', '1H': 'Hiệp 1', '2H': 'Hiệp 2', 'CANC': 'Hủy', 'PST': 'Hoãn'
               };
               const dateObj = new Date(item.fixture.date);
               const timeStr = dateObj.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
 
               return {
-                id: item.fixture.id, // ID thật để lấy Detail
+                id: item.fixture.id, 
                 time: timeStr,
                 league: 'Premier League', 
                 teamA: item.teams.home.name,
@@ -264,7 +266,7 @@ const App = () => {
                 logoA: item.teams.home.logo, 
                 logoB: item.teams.away.logo,
                 score: `${item.goals.home ?? '-'} - ${item.goals.away ?? '-'}`,
-                status: isLive ? 'Live' : (statusMap[item.fixture.status.short] || item.fixture.status.short),
+                status: isLive ? (item.fixture.status.elapsed ? `${item.fixture.status.elapsed}'` : (item.fixture.status.short === 'HT' ? 'HT' : 'LIVE')) : (statusMap[item.fixture.status.short] || item.fixture.status.short),
                 isLive: isLive
               };
             });
@@ -285,7 +287,6 @@ const App = () => {
     fetchMatches();
   }, [selectedDateIndex]);
 
-  // LOGIC GỌI API CHO BẢNG XẾP HẠNG
   useEffect(() => {
     const fetchRealStandings = async () => {
       if (!API_KEY) return; 
@@ -327,9 +328,7 @@ const App = () => {
     fetchRealStandings();
   }, [selectedStandingsLeague]);
 
-  // === NEW LOGIC: GỌI API CHO CHI TIẾT TRẬN ĐẤU ===
   useEffect(() => {
-    // Chỉ gọi API khi mở tab chi tiết trận đấu và có ID
     if (activeTab !== 'match-detail' || !selectedMatch?.id) return;
 
     const fetchMatchDetails = async () => {
@@ -339,7 +338,6 @@ const App = () => {
       }
       setIsDetailsLoading(true);
       try {
-        // API /fixtures?id=... trả về toàn bộ: stats, lineups, events của 1 trận duy nhất
         const response = await fetch(`https://v3.football.api-sports.io/fixtures?id=${selectedMatch.id}`, {
           method: 'GET',
           headers: { 'x-apisports-key': API_KEY }
@@ -347,7 +345,6 @@ const App = () => {
         const data = await response.json();
         
         if (data.response && data.response.length > 0) {
-          console.log("[Detail] Đã tải thành công chi tiết trận đấu!");
           setMatchDetailsData(data.response[0]);
         } else {
           setMatchDetailsData(null);
@@ -384,7 +381,6 @@ const App = () => {
             <h1 className="text-[28px] font-extrabold tracking-tight text-white">{title}</h1>
           )}
           
-          {/* LUÔN HIỂN THỊ TRẠNG THÁI API */}
           <div className="flex items-center gap-1.5 mt-0.5 ml-2">
              <div className={`w-1.5 h-1.5 rounded-full ${apiStatus === 'LIVE API' ? 'bg-[#4ade80] animate-pulse' : 'bg-amber-500'}`}></div>
              <span className="text-[9px] font-bold text-[#a1a1aa] uppercase tracking-widest truncate max-w-[120px]">
@@ -482,7 +478,6 @@ const App = () => {
     );
   };
 
-  // MÀN HÌNH BẢNG XẾP HẠNG 
   const StandingsView = () => {  
     const leagues = ['Champions League', 'Premier League', 'La Liga', 'Serie A', 'Bundesliga'];
     const currentStandings = apiStandings[selectedStandingsLeague] || [];
@@ -529,7 +524,7 @@ const App = () => {
                 if (team.pos <= 4) rankColor = 'text-[#4ade80] font-bold';
                 
                 return (
-                  <div key={idx} onClick={() => { setSelectedTeam(team); setActiveTab('team-detail'); }} className="flex items-center px-5 py-3.5 hover:bg-white/5 transition-colors cursor-pointer group">
+                  <div key={idx} className="flex items-center px-5 py-3.5 hover:bg-white/5 transition-colors cursor-pointer group">
                     <span className={`w-8 text-[13px] ${rankColor}`}>{team.pos}</span>
                     <div className="flex-1 flex items-center gap-3 truncate pr-2">
                       <div className="w-7 h-7 shrink-0 bg-white/5 p-1 rounded-full"><TeamLogo src={team.logo || getLogo(team.team)} className="w-full h-full object-contain" /></div>
@@ -550,60 +545,23 @@ const App = () => {
       </div>
     );
   };
-
-  const TeamDetailView = () => { 
-     if (!selectedTeam) return null;
-     const total = selectedTeam.p || 1;
-     const wPct = (selectedTeam.w / total) * 100;
-     const dPct = (selectedTeam.d / total) * 100;
-     
-     const upcomingMatches = [
-       { id: 201, date: '25/05', opp: 'Chelsea', venue: 'Sân khách', logo: getLogo('Chelsea'), time: '20:00' },
-       { id: 202, date: '29/05', opp: 'Real Madrid', venue: 'Sân nhà', logo: getLogo('Real Madrid'), time: '02:00' },
-     ];
-
-     return (
-       <div className="flex flex-col h-full bg-[#18181b] text-zinc-100 overflow-y-auto [&::-webkit-scrollbar]:hidden pb-28 pt-14">
-          <button onClick={() => setActiveTab('standings')} className="w-10 h-10 ml-5 flex items-center justify-center bg-[#27272a] rounded-full active:scale-95"><ChevronLeft size={18} className="text-zinc-300" /></button>
-          <div className="flex flex-col items-center mt-6">
-            <div className="w-24 h-24 mb-4 bg-white/5 p-3 rounded-full"><TeamLogo src={selectedTeam.logo || getLogo(selectedTeam.team)} className="w-full h-full object-contain drop-shadow-2xl" /></div>
-            <h2 className="text-[28px] font-extrabold text-white">{selectedTeam.team}</h2>
-            <span className="text-xs text-[#4ade80] font-semibold mt-1">{selectedStandingsLeague}</span>
-          </div>
-
-          <div className="px-5 mt-10 space-y-7">
-            {/* Tỉ lệ kết quả */}
-            <div>
-              <h3 className="text-[11px] font-bold text-[#71717a] uppercase tracking-wider mb-3">Tỉ lệ kết quả</h3>
-              <div className="bg-[#222226] border border-[#27272a] rounded-[24px] p-5 flex items-center justify-between">
-                <div className="relative w-20 h-20 rounded-full flex items-center justify-center shadow-inner" style={{ background: `conic-gradient(#4ade80 0% ${wPct}%, #71717a ${wPct}% ${wPct + dPct}%, #ef4444 ${wPct + dPct}% 100%)` }}>
-                  <div className="w-14 h-14 bg-[#222226] rounded-full flex flex-col items-center justify-center shadow-md"><span className="text-[9px] text-[#a1a1aa] font-medium">Số trận</span><span className="text-[15px] font-black text-white leading-none mt-0.5">{selectedTeam.p || selectedTeam.w + selectedTeam.d + selectedTeam.l}</span></div>
-                </div>
-                <div className="flex flex-col gap-2.5 w-[50%]">
-                  <div className="flex justify-between items-center"><div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded-full bg-[#4ade80]"></div><span className="text-xs font-semibold text-zinc-300">Thắng</span></div><span className="text-xs font-bold text-[#4ade80]">{selectedTeam.w}</span></div>
-                  <div className="flex justify-between items-center"><div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded-full bg-zinc-500"></div><span className="text-xs font-semibold text-zinc-300">Hòa</span></div><span className="text-xs font-bold text-zinc-300">{selectedTeam.d}</span></div>
-                  <div className="flex justify-between items-center"><div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded-full bg-red-500"></div><span className="text-xs font-semibold text-zinc-300">Thua</span></div><span className="text-xs font-bold text-red-400">{selectedTeam.l}</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-       </div>
-     )
-  };
   
   const CalendarView = () => { return <div className="h-full bg-[#18181b] p-20 text-white text-center pt-32">Calendar View</div> };
   const ProfileView = () => { return <div className="h-full bg-[#18181b] p-20 text-white text-center pt-32">Profile View</div> };
 
 
   // ==============================================================
-  // 6. MÀN HÌNH CHI TIẾT TRẬN ĐẤU (ĐÃ TÍCH HỢP DATA API THỰC TẾ)
+  // 6. MÀN HÌNH CHI TIẾT TRẬN ĐẤU
   // ==============================================================
   const MatchDetailView = () => {
     if (!selectedMatch) return null;
     
-    // Hàm xử lý đội hình lưới (Grid) do API trả về thành toạ độ % trên màn hình
+    // Sửa lỗi ReferenceError bằng cách định nghĩa colorA và colorB ở đây
+    const colorA = getColor(selectedMatch?.teamA);
+    const colorB = getColor(selectedMatch?.teamB);
+    
     const parseLineupGrid = (apiStartXI, isHome) => {
-      if (!apiStartXI || apiStartXI.length === 0) return isHome ? mockTeamALineup : mockTeamBLineup; // Fallback
+      if (!apiStartXI || apiStartXI.length === 0) return isHome ? mockTeamALineup : mockTeamBLineup; 
       
       const rows = {};
       apiStartXI.forEach(item => {
@@ -618,42 +576,30 @@ const App = () => {
       const totalRows = rowKeys.length;
 
       rowKeys.forEach((y, rowIdx) => {
-          rows[y].sort((a,b) => a.x - b.x); // Sắp xếp theo chiều ngang
+          rows[y].sort((a,b) => a.x - b.x); 
           const colsInRow = rows[y].length;
           rows[y].forEach((player, colIdx) => {
-              // Tính toán Top % (Dọc)
               let top = isHome ? 90 - (rowIdx * (70/(totalRows-1 || 1))) : 10 + (rowIdx * (70/(totalRows-1 || 1)));
-              if (y === '1') top = isHome ? 90 : 10; // Cố định Thủ môn
-
-              // Tính toán Left % (Ngang)
+              if (y === '1') top = isHome ? 90 : 10; 
               let left = 50;
               if (colsInRow > 1) {
                   const step = 60 / (colsInRow - 1);
                   left = 20 + (colIdx * step);
               }
-
-              parsedLineup.push({
-                  id: player.id,
-                  name: player.name.split(' ').pop(), // Lấy tên viết tắt
-                  number: player.number,
-                  top: `${top}%`,
-                  left: `${left}%`
-              });
+              parsedLineup.push({ id: player.id, name: player.name.split(' ').pop(), number: player.number, top: `${top}%`, left: `${left}%` });
           });
       });
       return parsedLineup;
     };
 
-    // --- CHUẨN BỊ DỮ LIỆU TỪ STATE matchDetailsData ---
-    
-    // 1. Thống kê (Statistics)
     let currentStatsData = mockStatsData;
     let possA = 50, possB = 50;
+    let cornersA = 0, cornersB = 0;
+    let yellowsA = 0, yellowsB = 0;
     
     if (matchDetailsData && matchDetailsData.statistics && matchDetailsData.statistics.length === 2) {
       const statsA = matchDetailsData.statistics[0].statistics;
       const statsB = matchDetailsData.statistics[1].statistics;
-      
       const getStat = (arr, t) => { 
         const item = arr.find(s=>s.type===t); 
         if(!item || item.value === null) return 0;
@@ -670,16 +616,15 @@ const App = () => {
         { label: 'Phạm lỗi', a: getStat(statsA, 'Fouls'), b: getStat(statsB, 'Fouls') },
         { label: 'Thẻ vàng', a: getStat(statsA, 'Yellow Cards'), b: getStat(statsB, 'Yellow Cards') },
       ];
-      
       possA = getStat(statsA, 'Ball Possession') || 50;
       possB = 100 - possA;
+      cornersA = getStat(statsA, 'Corner Kicks'); cornersB = getStat(statsB, 'Corner Kicks');
+      yellowsA = getStat(statsA, 'Yellow Cards'); yellowsB = getStat(statsB, 'Yellow Cards');
     }
 
-    // 2. Đội hình (Lineups)
     let currentLineupA = mockTeamALineup;
     let currentLineupB = mockTeamBLineup;
     let formA = '4-3-3', formB = '4-3-3';
-    
     if (matchDetailsData && matchDetailsData.lineups && matchDetailsData.lineups.length === 2) {
         formA = matchDetailsData.lineups[0].formation || '-';
         formB = matchDetailsData.lineups[1].formation || '-';
@@ -687,7 +632,17 @@ const App = () => {
         currentLineupB = parseLineupGrid(matchDetailsData.lineups[1].startXI, false);
     }
 
-    // 3. Sự kiện Timeline (Events)
+    const venue = matchDetailsData?.fixture?.venue?.name || 'Sân vận động chính';
+    const referee = matchDetailsData?.fixture?.referee || 'Trọng tài chính';
+    const htScoreHome = matchDetailsData?.score?.halftime?.home;
+    const htScoreAway = matchDetailsData?.score?.halftime?.away;
+    const htScoreString = (htScoreHome !== null && htScoreHome !== undefined) ? `HT ${htScoreHome} - ${htScoreAway}` : 'HT 0 - 0';
+
+    let coachA = matchDetailsData?.lineups?.[0]?.coach?.name || '-';
+    let coachB = matchDetailsData?.lineups?.[1]?.coach?.name || '-';
+    let subsA = matchDetailsData?.lineups?.[0]?.substitutes || [];
+    let subsB = matchDetailsData?.lineups?.[1]?.substitutes || [];
+
     let currentEvents = mockTimelineEvents;
     if (matchDetailsData && matchDetailsData.events) {
        currentEvents = matchDetailsData.events.map((ev, idx) => {
@@ -705,207 +660,325 @@ const App = () => {
                player: ev.player.name,
                playerIn: ev.type === 'subst' ? ev.assist.name : null,
                playerOut: ev.type === 'subst' ? ev.player.name : null,
-               detail: ev.type === 'Goal' ? ev.detail : null,
+               detail: ev.type === 'Goal' ? ev.detail : (evType === 'yellow_card' ? 'Phạm lỗi' : ''),
                side: isHome ? 'left' : 'right',
-               isRecent: idx === matchDetailsData.events.length - 1
+               isRecent: false
            };
-       }).reverse(); // Xếp sự kiện mới nhất lên trên
+       });
     }
 
     const isUpcoming = ['Sắp đá', 'Ngày mai', 'NS'].includes(selectedMatch.status);
-    const colorA = getColor(selectedMatch.teamA);
-    const colorB = getColor(selectedMatch.teamB);
+
+    const getEventIcon = (type) => {
+      if (type === 'goal') return <div className="text-[12px] drop-shadow-sm">⚽</div>;
+      if (type === 'yellow_card') return <div className="w-2.5 h-3.5 bg-yellow-400 rounded-[1px] shadow-sm"></div>;
+      if (type === 'red_card') return <div className="w-2.5 h-3.5 bg-red-500 rounded-[1px] shadow-sm"></div>;
+      if (type === 'sub') return <ArrowRightLeft size={12} className="text-red-400" />;
+      return null;
+    }
 
     return (
-      <div className="flex flex-col h-full bg-[#18181b] text-zinc-100 overflow-y-auto [&::-webkit-scrollbar]:hidden pb-28 pt-14">
-        
-        {/* Top Navigation */}
-        <div className="px-5 pb-3 flex justify-between items-center">
-          <button onClick={() => setActiveTab('schedule')} className="w-10 h-10 flex items-center justify-center bg-[#27272a] rounded-full active:scale-95"><ChevronLeft size={18} className="text-zinc-300" /></button>
-          {selectedMatch.isLive ? (
-            <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/20 px-3 py-1 rounded-full"><div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></div><span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Live</span></div>
-          ) : (
-            <span className="text-[11px] font-bold text-[#71717a] uppercase tracking-wider">{selectedMatch.league}</span>
-          )}
-          <button className="w-10 h-10 flex items-center justify-center bg-[#27272a] rounded-full active:scale-95"><MoreVertical size={18} className="text-zinc-300" /></button>
-        </div>
-        
-        {/* Scoreboard */}
-        <div className="px-5 py-4 flex justify-between items-center relative">
-          {/* Huy hiệu Loading mờ khi đang lấy chi tiết */}
-          {isDetailsLoading && <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-[#27272a] px-3 py-1 rounded-full text-[10px] text-zinc-400 font-bold flex items-center gap-2"><div className="w-3 h-3 border-2 border-[#4ade80] border-t-transparent rounded-full animate-spin"></div> Cập nhật dữ liệu...</div>}
+      <div className="flex flex-col h-full bg-[#18181b] text-zinc-100 overflow-y-auto [&::-webkit-scrollbar]:hidden pb-28 pt-10 relative">
+        {isDetailsLoading && <div className="absolute top-16 left-1/2 -translate-x-1/2 bg-[#27272a] px-3 py-1 rounded-full text-[10px] text-zinc-400 font-bold flex items-center gap-2 z-50 shadow-lg"><div className="w-3 h-3 border-2 border-[#f59e0b] border-t-transparent rounded-full animate-spin"></div> Đang tải...</div>}
 
-          <div className="flex flex-col items-center gap-3 w-1/3"><div className="w-14 h-14 shrink-0 bg-white/5 p-2 rounded-full"><TeamLogo src={selectedMatch.logoA || getLogo(selectedMatch.teamA)} className="w-full h-full object-contain drop-shadow-lg" /></div><span className="text-[13px] font-bold text-center text-white">{selectedMatch.teamA}</span></div>
-          <div className="flex flex-col items-center w-1/3">
-            <div className="text-[40px] font-black tracking-tighter flex items-center gap-3 relative">
-              {selectedMatch.isLive && <div className="absolute -inset-4 bg-[#4ade80]/20 blur-xl rounded-full animate-pulse"></div>}
-              <span className={`z-10 ${selectedMatch.isLive ? 'text-[#4ade80]' : 'text-white'}`}>{selectedMatch.score.split(' ')[0]}</span>
-              <span className="text-[#3f3f46] font-light text-[32px] pb-2 z-10">-</span>
-              <span className={`z-10 ${selectedMatch.isLive ? 'text-[#4ade80]' : 'text-white'}`}>{selectedMatch.score.split(' ')[2]}</span>
-            </div>
-            <div className="mt-1">
-               {selectedMatch.isLive ? (
-                 <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/20 px-2.5 py-0.5 rounded text-red-500 shadow-sm"><Activity size={12} className="animate-pulse" /><span className="text-[10px] font-bold">LIVE</span></div>
-               ) : (
-                 <span className="text-[11px] font-bold text-[#a1a1aa] bg-[#27272a] px-3 py-1 rounded-full">{selectedMatch.time}</span>
-               )}
-            </div>
+        <div className="flex justify-between items-center px-4 pb-6">
+          <div className="w-[75px] flex justify-start">
+            <button onClick={() => setActiveTab('schedule')} className="w-8 h-8 flex items-center justify-start text-zinc-300 active:scale-95">
+              <ChevronLeft size={24} />
+            </button>
           </div>
-          <div className="flex flex-col items-center gap-3 w-1/3"><div className="w-14 h-14 shrink-0 bg-white/5 p-2 rounded-full"><TeamLogo src={selectedMatch.logoB || getLogo(selectedMatch.teamB)} className="w-full h-full object-contain drop-shadow-lg" /></div><span className="text-[13px] font-bold text-center text-white">{selectedMatch.teamB}</span></div>
-        </div>
-
-        {/* Tabs Điều hướng */}
-        <div className="flex bg-[#27272a] p-1 rounded-full mx-5 mb-6 mt-4">
-          {['Chi tiết', 'Đội hình', 'Thống kê'].map(t => <button key={t} onClick={() => setSelectedMatchTab(t)} className={`flex-1 py-2.5 text-[13px] font-bold rounded-full transition-all ${selectedMatchTab === t ? 'bg-[#18181b] text-white shadow-sm' : 'text-[#a1a1aa] hover:text-white'}`}>{t}</button>)}
-        </div>
-
-        <div className="flex-1 bg-[#202024] rounded-t-[36px] p-6 min-h-[400px]">
           
-          {/* --------------------- TAB 1: CHI TIẾT (TIMELINE) --------------------- */}
+          <div className="flex flex-col items-center flex-1">
+             <div className="flex items-center justify-center gap-4 w-full">
+                <TeamLogo src={selectedMatch.logoA || getLogo(selectedMatch.teamA)} className="w-9 h-9 drop-shadow-lg" />
+                
+                <div className="bg-[#1c1c1e] border border-white/5 px-3 py-1 rounded-xl text-[16px] font-black tracking-widest text-white shadow-inner flex items-center justify-center min-w-[70px] whitespace-nowrap">
+                  {selectedMatch.score}
+                </div>
+                
+                <TeamLogo src={selectedMatch.logoB || getLogo(selectedMatch.teamB)} className="w-9 h-9 drop-shadow-lg" />
+             </div>
+             
+             <span className="text-[11px] font-bold text-[#4ade80] uppercase tracking-widest mt-2.5 flex items-center gap-1.5">
+                {selectedMatch.isLive && <span className="w-1.5 h-1.5 bg-[#4ade80] rounded-full animate-pulse"></span>}
+                {selectedMatch.isLive 
+                    ? (matchDetailsData?.fixture?.status?.elapsed ? `${matchDetailsData.fixture.status.elapsed}'` : selectedMatch.status) 
+                    : (htScoreString ? htScoreString : selectedMatch.status)}
+             </span>
+          </div>
+
+          <div className="w-[75px] flex justify-end">
+          </div>
+        </div>
+
+        <div className="flex gap-2.5 px-4 pb-4 mt-2 overflow-x-auto snap-x [&::-webkit-scrollbar]:hidden">
+          {[
+            { id: 'Chi tiết', icon: AlignLeft },
+            { id: 'Đội hình', icon: Users },
+            { id: 'AI dự đoán', icon: Cpu },
+            { id: 'Thông số', icon: BarChart2 }
+          ].map(t => {
+            const isActive = selectedMatchTab === t.id;
+            const Icon = t.icon;
+            return (
+              <button 
+                key={t.id} onClick={() => setSelectedMatchTab(t.id)} 
+                className={`shrink-0 snap-start flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold transition-all ${isActive ? 'bg-[#332616] text-[#f59e0b] border border-[#f59e0b]/50' : 'bg-[#222226] text-[#a1a1aa] border border-transparent hover:text-white'}`}
+              >
+                <Icon size={14} /> {t.id}
+              </button>
+            )
+          })}
+        </div>
+
+        <div className="flex-1 px-4 min-h-[400px]">
+          
           {selectedMatchTab === 'Chi tiết' && (
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-4">
               
               {isUpcoming && !matchDetailsData?.events ? (
-                  <div className="text-center py-10 text-[#71717a] text-sm font-medium">Trận đấu chưa diễn ra, chưa có dòng thời gian.</div>
-              ) : (
-                <>
-                  <div className="flex flex-col gap-5 mb-2">
-                    {/* Module Kiểm soát bóng động */}
-                    <div className="bg-[#18181b] border border-[#27272a] p-5 rounded-[24px]">
-                       <h3 className="text-[11px] font-bold text-[#71717a] uppercase tracking-wider mb-3 text-center">Kiểm soát bóng</h3>
-                       <div className="flex justify-between items-end mb-2 px-1">
-                          <span className={`text-[20px] font-black ${possA >= possB ? 'text-[#4ade80]' : 'text-white'}`}>{possA}%</span>
-                          <span className={`text-[20px] font-black ${possB > possA ? 'text-[#4ade80]' : 'text-white'}`}>{possB}%</span>
+                  <div className="flex flex-col">
+                    <div className="flex flex-col gap-2.5 py-3 border-b border-[#27272a]">
+                       <div className="flex items-center justify-between">
+                         <div className="flex items-center gap-2 text-[#71717a]"><Home size={12}/><span className="text-[10px] font-bold uppercase tracking-wider">Sân vận động</span></div>
+                         <span className="text-[11px] font-bold text-white">{venue}</span>
                        </div>
-                       <div className="flex h-2.5 gap-1.5">
-                         <div className="flex-1 bg-[#27272a] rounded-full overflow-hidden"><div className={`h-full w-[${possA}%] float-right ${possA >= possB ? 'bg-[#4ade80]' : 'bg-white'}`} style={{width: `${possA}%`}}></div></div>
-                         <div className="flex-1 bg-[#27272a] rounded-full overflow-hidden"><div className={`h-full w-[${possB}%] ${possB > possA ? 'bg-[#4ade80]' : 'bg-white'}`} style={{width: `${possB}%`}}></div></div>
+                       <div className="flex items-center justify-between">
+                         <div className="flex items-center gap-2 text-[#71717a]"><User size={12}/><span className="text-[10px] font-bold uppercase tracking-wider">Trọng tài</span></div>
+                         <span className="text-[11px] font-bold text-white">{referee}</span>
+                       </div>
+                    </div>
+
+                    <div className="py-4 border-b border-[#27272a]">
+                       <div className="flex justify-between items-center mb-2">
+                          <span className="text-[13px] font-black" style={{color: colorA}}>2 Thắng</span>
+                          <span className="text-[10px] font-bold text-[#71717a] uppercase tracking-wider">Đối đầu</span>
+                          <span className="text-[13px] font-black" style={{color: colorB}}>1 Thắng</span>
+                       </div>
+                       <div className="flex h-1.5 gap-1 mb-4">
+                         <div className="flex-1 bg-[#27272a] rounded-full overflow-hidden"><div className="h-full float-right" style={{width: '40%', backgroundColor: colorA}}></div></div>
+                         <div className="flex-[0.5] bg-[#3f3f46] rounded-full overflow-hidden"></div>
+                         <div className="flex-1 bg-[#27272a] rounded-full overflow-hidden"><div className="h-full float-left" style={{width: '20%', backgroundColor: colorB}}></div></div>
+                       </div>
+                       
+                       <div className="flex gap-2.5 overflow-x-auto snap-x [&::-webkit-scrollbar]:hidden pb-1 justify-center">
+                         {mockH2HList.map((score, i) => (
+                            <div key={i} className="snap-start shrink-0 flex items-center justify-center gap-2 bg-[#1c1c1e] px-2.5 py-1.5 rounded-lg border border-[#27272a]">
+                              <TeamLogo src={selectedMatch.logoA || getLogo(selectedMatch.teamA)} className="w-3.5 h-3.5 shrink-0" />
+                              <span className="text-[11px] font-bold text-white">{score}</span>
+                              <TeamLogo src={selectedMatch.logoB || getLogo(selectedMatch.teamB)} className="w-3.5 h-3.5 shrink-0" />
+                            </div>
+                         ))}
+                       </div>
+                    </div>
+
+                    <div className="py-4">
+                       <h3 className="text-[10px] font-bold text-[#71717a] uppercase tracking-wider mb-3 text-center">Phong độ gần đây</h3>
+                       <div className="flex flex-col gap-3">
+                         <div className="flex items-center gap-3">
+                            <TeamLogo src={selectedMatch.logoA || getLogo(selectedMatch.teamA)} className="w-6 h-6 shrink-0 drop-shadow-md" />
+                            <div className="flex items-center gap-2 overflow-x-auto snap-x [&::-webkit-scrollbar]:hidden pb-1">
+                              {mockRecentA.map((m, i) => (
+                                 <div key={i} className="snap-start shrink-0 flex items-center gap-1.5 bg-[#1c1c1e] h-7 px-2.5 rounded-md border border-[#27272a]">
+                                   <span className={`text-[11px] font-black ${m.res==='W'?'text-[#4ade80]':m.res==='D'?'text-[#a1a1aa]':'text-red-500'}`}>{m.res}</span>
+                                   <span className="text-[11px] font-bold text-white">{m.score}</span>
+                                   <TeamLogo src={getLogo(m.opp)} className="w-4 h-4 shrink-0" />
+                                 </div>
+                              ))}
+                            </div>
+                         </div>
+                         <div className="flex items-center gap-3">
+                            <TeamLogo src={selectedMatch.logoB || getLogo(selectedMatch.teamB)} className="w-6 h-6 shrink-0 drop-shadow-md" />
+                            <div className="flex items-center gap-2 overflow-x-auto snap-x [&::-webkit-scrollbar]:hidden pb-1">
+                              {mockRecentB.map((m, i) => (
+                                 <div key={i} className="snap-start shrink-0 flex items-center gap-1.5 bg-[#1c1c1e] h-7 px-2.5 rounded-md border border-[#27272a]">
+                                   <span className={`text-[11px] font-black ${m.res==='W'?'text-[#4ade80]':m.res==='D'?'text-[#a1a1aa]':'text-red-500'}`}>{m.res}</span>
+                                   <span className="text-[11px] font-bold text-white">{m.score}</span>
+                                   <TeamLogo src={getLogo(m.opp)} className="w-4 h-4 shrink-0" />
+                                 </div>
+                              ))}
+                            </div>
+                         </div>
                        </div>
                     </div>
                   </div>
-
-                  {/* Dòng thời gian Event thực tế từ API */}
-                  <h3 className="text-[11px] font-bold text-[#71717a] uppercase tracking-wider mt-4 mb-3">Dòng thời gian</h3>
-                  {currentEvents.length === 0 ? (
-                     <div className="text-center py-4 text-[#71717a] text-xs">Chưa có sự kiện nào nổi bật</div>
-                  ) : (
-                    <div className="space-y-7 relative before:absolute before:inset-0 before:left-1/2 before:-translate-x-1/2 before:h-full before:w-0.5 before:bg-[#27272a]">
-                      {currentEvents.map((event) => (
-                        <div key={event.id} className="relative flex items-center justify-between w-full group">
-                          {/* ĐỘI NHÀ (TRÁI) */}
-                          <div className={`w-[42%] flex flex-col ${event.side === 'left' ? 'items-end text-right' : 'items-start text-left opacity-0'}`}>
-                            {event.side === 'left' && (
-                              <>
-                                <div className="flex items-center gap-2 justify-end">
-                                  {event.type === 'goal' && <span className="text-sm drop-shadow-md">⚽</span>}
-                                  <span className={`font-bold ${event.isRecent ? 'text-[#4ade80] text-[14px]' : 'text-white text-[13px]'}`}>{event.player || event.playerIn}</span>
-                                </div>
-                                {event.playerOut && <span className="text-[11px] text-[#71717a] font-medium mt-1">Ra: {event.playerOut}</span>}
-                                {event.detail && event.type !== 'danger' && <span className="text-[11px] text-[#4ade80] font-medium mt-1">{event.detail}</span>}
-                              </>
-                            )}
-                          </div>
-                          
-                          {/* TRUNG TÂM (THỜI GIAN/ICON) */}
-                          <div className="w-8 h-8 absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
-                            {event.side === 'center' ? (
-                              <div className={`border text-[10px] font-bold px-3 py-1.5 rounded-full z-10 whitespace-nowrap ${event.type === 'info' ? 'bg-[#1e3a2e] border-[#2a5a44] text-[#4ade80]' : 'bg-[#27272a] border-[#3f3f46] text-[#a1a1aa]'}`}>{event.label}</div>
-                            ) : (
-                              <div className={`w-7 h-7 rounded-full border-[3px] border-[#202024] z-10 flex items-center justify-center text-[10px] font-black ${event.type === 'goal' ? `bg-[#4ade80] text-[#18181b] ${event.isRecent ? 'animate-pulse' : ''}` : event.type === 'yellow_card' ? 'bg-yellow-400 text-yellow-900' : event.type === 'red_card' ? 'bg-red-500 text-white' : 'bg-[#27272a] text-[#a1a1aa]'}`}>
-                                {event.time.replace("'", "")}
-                              </div>
-                            )}
-                          </div>
-
-                          {/* ĐỘI KHÁCH (PHẢI) */}
-                          <div className={`w-[42%] flex flex-col ${event.side === 'right' ? 'items-start text-left' : 'items-end text-right opacity-0'}`}>
-                            {event.side === 'right' && (
-                              <>
-                                <div className="flex items-center gap-2 justify-start">
-                                  <span className={`font-bold ${event.isRecent ? 'text-[#4ade80] text-[14px]' : 'text-white text-[13px]'}`}>{event.player || event.playerIn}</span>
-                                  {event.type === 'goal' && <span className="text-sm drop-shadow-md">⚽</span>}
-                                </div>
-                                {event.playerOut && <span className="text-[11px] text-[#71717a] font-medium mt-1">Ra: {event.playerOut}</span>}
-                                {event.detail && event.type !== 'danger' && <span className="text-[11px] text-[#4ade80] font-medium mt-1">{event.detail}</span>}
-                              </>
-                            )}
-                          </div>
+              ) : (
+                <>
+                  <div className="bg-[#1c1c1e] rounded-[20px] p-4 flex flex-col gap-4 shadow-sm">
+                     <h3 className="text-[12px] font-medium text-[#71717a] text-center">Kiểm soát bóng</h3>
+                     <div className="flex items-center gap-3">
+                        <TeamLogo src={selectedMatch.logoA || getLogo(selectedMatch.teamA)} className="w-5 h-5 shrink-0" />
+                        <div className="flex-1 flex h-6 rounded-md overflow-hidden text-[11px] font-bold text-white shadow-inner">
+                           <div className="bg-[#1d4ed8] h-full flex items-center justify-end px-2 transition-all" style={{width: `${possA}%`}}>{possA}%</div>
+                           <div className="bg-[#d97706] h-full flex items-center justify-start px-2 transition-all" style={{width: `${possB}%`}}>{possB}%</div>
                         </div>
-                      ))}
+                        <TeamLogo src={selectedMatch.logoB || getLogo(selectedMatch.teamB)} className="w-5 h-5 shrink-0" />
+                     </div>
+                     <div className="flex justify-center items-center gap-6 mt-1">
+                        <div className="flex items-center gap-2.5 bg-[#18181b] px-4 py-1.5 rounded-full">
+                           <span className="text-[11px] font-bold text-white">{cornersA}</span>
+                           <Flag size={12} className="text-[#a1a1aa] fill-current" />
+                           <span className="text-[11px] font-bold text-white">{cornersB}</span>
+                        </div>
+                        <div className="flex items-center gap-2.5 bg-[#18181b] px-4 py-1.5 rounded-full">
+                           <span className="text-[11px] font-bold text-white">{yellowsA}</span>
+                           <div className="w-2.5 h-3.5 bg-yellow-400 rounded-sm"></div>
+                           <span className="text-[11px] font-bold text-white">{yellowsB}</span>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="bg-[#1c1c1e] rounded-[20px] p-5">
+                    <div className="relative">
+                      <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-[#3f3f46] -translate-x-1/2"></div>
+                      
+                      <div className="flex flex-col items-center justify-center mb-6 relative z-10">
+                         <div className="bg-[#18181b] border border-[#3f3f46] px-3 py-1 rounded-full text-[11px] font-bold text-white shadow-md">
+                           {htScoreString}
+                         </div>
+                         <span className="text-[9px] text-[#a1a1aa] mt-1 bg-[#1c1c1e] px-1">+ 3 phút bù giờ</span>
+                      </div>
+
+                      {currentEvents.length === 0 ? (
+                         <div className="text-center py-4 text-[#71717a] text-[11px]">Chưa có sự kiện nào</div>
+                      ) : (
+                        currentEvents.map((ev, i) => (
+                           <div key={i} className="grid grid-cols-[1fr_40px_1fr] items-center mb-5 relative z-10">
+                              
+                              <div className="flex items-center justify-end gap-2.5 pr-2">
+                                 {ev.side === 'left' && (
+                                    <>
+                                      <div className="flex flex-col items-end">
+                                         <span className="text-[12px] font-medium text-white">{ev.player}</span>
+                                         <span className="text-[10px] text-[#71717a]">{ev.detail}</span>
+                                      </div>
+                                      {getEventIcon(ev.type)}
+                                    </>
+                                 )}
+                              </div>
+                              
+                              <div className="flex justify-center">
+                                 <span className="text-[10px] text-[#a1a1aa] bg-[#1c1c1e] py-1 px-1 font-medium">{ev.time}</span>
+                              </div>
+
+                              <div className="flex items-center justify-start gap-2.5 pl-2">
+                                 {ev.side === 'right' && (
+                                    <>
+                                      {getEventIcon(ev.type)}
+                                      <div className="flex flex-col items-start">
+                                         <span className="text-[12px] font-medium text-white">{ev.player}</span>
+                                         <span className="text-[10px] text-[#71717a]">{ev.detail}</span>
+                                      </div>
+                                    </>
+                                 )}
+                              </div>
+                           </div>
+                        ))
+                      )}
+
+                      <div className="flex flex-col items-center justify-center mt-6 relative z-10">
+                         <div className="bg-[#18181b] border border-[#3f3f46] px-3 py-1 rounded-full text-[10px] font-medium text-[#a1a1aa] shadow-md">
+                           Bắt đầu trận
+                         </div>
+                         <div className="flex items-center gap-1 text-[8px] text-[#71717a] mt-2">
+                           <Activity size={10} className="text-green-500" />
+                           Hiển thị/ẩn sự kiện trên dòng thời gian
+                         </div>
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </>
               )}
             </div>
           )}
 
-          {/* --------------------- TAB 2: ĐỘI HÌNH (LINEUPS) --------------------- */}
           {selectedMatchTab === 'Đội hình' && (
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-4">
               <div className="flex justify-between items-center px-1">
-                <div className="flex items-center gap-3"><div className="w-4 h-4 rounded-full bg-[#18181b] border-[1.5px] border-[#3f3f46]"></div><div className="flex flex-col"><span className="text-[13px] font-bold text-white truncate max-w-[100px]">{selectedMatch.teamA}</span><span className="text-[10px] text-[#4ade80] font-semibold">{formA}</span></div></div>
-                <div className="flex items-center gap-3 flex-row-reverse"><div className="w-4 h-4 rounded-full bg-white border-[1.5px] border-[#a1a1aa]"></div><div className="flex flex-col items-end"><span className="text-[13px] font-bold text-white truncate max-w-[100px]">{selectedMatch.teamB}</span><span className="text-[10px] text-[#4ade80] font-semibold">{formB}</span></div></div>
+                <div className="flex items-center gap-2"><TeamLogo src={selectedMatch.logoA || getLogo(selectedMatch.teamA)} className="w-5 h-5" /><div className="flex flex-col"><span className="text-[12px] font-bold text-white truncate max-w-[100px]">{selectedMatch.teamA}</span><span className="text-[9px] text-[#f59e0b] font-semibold">{formA}</span></div></div>
+                <div className="flex items-center gap-2 flex-row-reverse"><TeamLogo src={selectedMatch.logoB || getLogo(selectedMatch.teamB)} className="w-5 h-5" /><div className="flex flex-col items-end"><span className="text-[12px] font-bold text-white truncate max-w-[100px]">{selectedMatch.teamB}</span><span className="text-[9px] text-[#f59e0b] font-semibold">{formB}</span></div></div>
               </div>
               
-              <div className="relative w-full aspect-[2/3.5] bg-[#064e3b] rounded-[24px] overflow-hidden shadow-inner border-[4px] border-[#18181b]">
-                {/* Đồ họa Sân cỏ */}
+              <div className="relative w-full aspect-[2/3] bg-[#064e3b] rounded-[16px] overflow-hidden shadow-inner border-[3px] border-[#18181b]">
                 <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_10%,rgba(0,0,0,0.1)_10%,rgba(0,0,0,0.1)_20%)] pointer-events-none"></div>
                 <div className="absolute top-1/2 left-0 w-full h-[1.5px] bg-white/40"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 border-[1.5px] border-white/40 rounded-full"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 border-[1.5px] border-white/40 rounded-full"></div>
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[55%] h-[16%] border-[1.5px] border-white/40 border-t-0"></div>
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[25%] h-[6%] border-[1.5px] border-white/40 border-t-0"></div>
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[55%] h-[16%] border-[1.5px] border-white/40 border-b-0"></div>
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[25%] h-[6%] border-[1.5px] border-white/40 border-b-0"></div>
               
-                {/* Render Đội Khách (Phía trên) */}
                 {currentLineupB.map((player) => (
                   <div key={player.id} className="absolute flex flex-col items-center justify-center -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-110 transition-transform cursor-pointer" style={{ top: player.top, left: player.left }}>
-                    <span className="text-[8px] font-bold text-[#18181b] mb-1 shadow-sm bg-white/95 backdrop-blur-sm px-1.5 py-0.5 rounded leading-none truncate max-w-[50px] text-center">{player.name}</span>
-                    <div className="relative flex items-center justify-center">
-                      <div className="w-[26px] h-[26px] shrink-0 rounded-full flex items-center justify-center text-[10px] font-black leading-none shadow-md bg-white border border-[#a1a1aa] text-[#18181b]">
-                         {player.number}
-                      </div>
-                    </div>
+                    <span className="text-[7px] font-bold text-[#18181b] mb-0.5 shadow-sm bg-white/95 backdrop-blur-sm px-1.5 py-0.5 rounded leading-none truncate max-w-[45px] text-center">{player.name}</span>
+                    <div className="w-[24px] h-[24px] shrink-0 rounded-full flex items-center justify-center text-[10px] font-black leading-none shadow-md bg-white border border-[#a1a1aa] text-[#18181b]">{player.number}</div>
                   </div>
                 ))}
-
-                {/* Render Đội Nhà (Phía dưới) */}
                 {currentLineupA.map((player) => (
                   <div key={player.id} className="absolute flex flex-col items-center justify-center -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-110 transition-transform cursor-pointer" style={{ top: player.top, left: player.left }}>
-                    <div className="relative flex items-center justify-center">
-                      <div className="w-[26px] h-[26px] shrink-0 rounded-full flex items-center justify-center text-[10px] font-black leading-none shadow-md bg-[#18181b] border border-[#3f3f46] text-white">
-                         {player.number}
-                      </div>
-                    </div>
-                    <span className="text-[8px] font-bold text-white mt-1 shadow-sm bg-[#18181b]/95 backdrop-blur-sm px-1.5 py-0.5 rounded border border-[#3f3f46] leading-none truncate max-w-[50px] text-center">{player.name}</span>
+                    <div className="w-[24px] h-[24px] shrink-0 rounded-full flex items-center justify-center text-[10px] font-black leading-none shadow-md bg-[#18181b] border border-[#3f3f46] text-white">{player.number}</div>
+                    <span className="text-[7px] font-bold text-white mt-0.5 shadow-sm bg-[#18181b]/95 backdrop-blur-sm px-1.5 py-0.5 rounded border border-[#3f3f46] leading-none truncate max-w-[45px] text-center">{player.name}</span>
                   </div>
                 ))}
+              </div>
+
+              <div className="bg-[#1c1c1e] rounded-[16px] p-4 flex gap-4 mt-2">
+                 <div className="flex-1 flex flex-col">
+                    <h4 className="text-[10px] font-bold text-[#71717a] uppercase mb-1.5">HLV: <span className="text-white normal-case">{coachA}</span></h4>
+                    <div className="flex flex-col">
+                       {subsA.slice(0, 5).map((sub, i) => (
+                         <div key={i} className="flex items-center gap-2 py-1.5 border-b border-[#27272a] last:border-0">
+                           <span className="text-[10px] font-medium text-[#71717a] w-4 text-right">{sub.player.number || '-'}</span>
+                           <span className="text-[11px] font-medium text-zinc-300 truncate">{sub.player.name}</span>
+                         </div>
+                       ))}
+                    </div>
+                 </div>
+                 <div className="w-[1px] bg-[#27272a]"></div>
+                 <div className="flex-1 flex flex-col items-end">
+                    <h4 className="text-[10px] font-bold text-[#71717a] uppercase mb-1.5">HLV: <span className="text-white normal-case">{coachB}</span></h4>
+                    <div className="flex flex-col w-full">
+                       {subsB.slice(0, 5).map((sub, i) => (
+                         <div key={i} className="flex items-center gap-2 py-1.5 border-b border-[#27272a] last:border-0 flex-row-reverse">
+                           <span className="text-[10px] font-medium text-[#71717a] w-4 text-left">{sub.player.number || '-'}</span>
+                           <span className="text-[11px] font-medium text-zinc-300 truncate text-right">{sub.player.name}</span>
+                         </div>
+                       ))}
+                    </div>
+                 </div>
               </div>
             </div>
           )}
 
-          {/* --------------------- TAB 3: THỐNG KÊ (STATISTICS) --------------------- */}
-          {selectedMatchTab === 'Thống kê' && (
-            <div className="flex flex-col gap-6 pt-3">
+          {selectedMatchTab === 'AI dự đoán' && (
+             <div className="flex flex-col items-center justify-center py-20 text-center">
+                <Cpu size={40} className="text-[#3f3f46] mb-3" />
+                <h3 className="text-sm font-bold text-white mb-1">Tính năng đang phát triển</h3>
+                <p className="text-[11px] text-[#71717a] max-w-[200px]">Trí tuệ nhân tạo sẽ sớm cập nhật dự đoán kết quả cho trận đấu này.</p>
+             </div>
+          )}
+
+          {selectedMatchTab === 'Thông số' && (
+            <div className="bg-[#1c1c1e] rounded-[20px] p-5 flex flex-col gap-4">
                {isUpcoming && !matchDetailsData?.statistics ? (
-                 <div className="text-center py-10 text-[#71717a] text-sm font-medium">Trận đấu chưa bắt đầu, chưa có số liệu.</div>
+                 <div className="text-center py-8 text-[#71717a] text-[11px] font-medium">Trận đấu chưa bắt đầu.</div>
                ) : currentStatsData.length === 0 ? (
-                 <div className="text-center py-10 text-[#71717a] text-sm font-medium">Không có dữ liệu thống kê từ API.</div>
+                 <div className="text-center py-8 text-[#71717a] text-[11px] font-medium">Không có dữ liệu thống kê.</div>
                ) : (
                  currentStatsData.map((stat, idx) => {
                    const total = stat.a + stat.b;
                    const pctA = total === 0 ? 50 : (stat.a / total) * 100;
                    const pctB = total === 0 ? 50 : (stat.b / total) * 100;
                    return (
-                     <div key={idx} className="flex flex-col gap-2.5">
-                       <div className="flex justify-between items-center text-[12px] font-bold">
-                         <span className={`w-10 ${stat.a >= stat.b ? 'text-[#4ade80]' : 'text-[#71717a]'}`}>{stat.a}{stat.format === '%' ? '%' : ''}</span>
-                         <span className="text-zinc-200 text-center flex-1">{stat.label}</span>
-                         <span className={`w-10 text-right ${stat.b >= stat.a ? 'text-[#4ade80]' : 'text-[#71717a]'}`}>{stat.b}{stat.format === '%' ? '%' : ''}</span>
+                     <div key={idx} className="flex flex-col gap-1.5">
+                       <div className="flex justify-between items-center text-[12px] font-medium">
+                         <span className={`w-8 font-bold ${stat.a >= stat.b ? 'text-[#1d4ed8]' : 'text-[#71717a]'}`}>{stat.a}{stat.format === '%' ? '%' : ''}</span>
+                         <span className="text-[#a1a1aa] text-center flex-1">{stat.label}</span>
+                         <span className={`w-8 font-bold text-right ${stat.b >= stat.a ? 'text-[#d97706]' : 'text-[#71717a]'}`}>{stat.b}{stat.format === '%' ? '%' : ''}</span>
                        </div>
-                       <div className="flex h-2 gap-1.5">
-                         <div className="flex-1 bg-[#18181b] rounded-full flex justify-end overflow-hidden"><div className={`h-full rounded-full ${stat.a >= stat.b ? 'bg-[#4ade80]' : 'bg-[#4ade80]/40'}`} style={{ width: `${pctA}%` }}></div></div>
-                         <div className="flex-1 bg-[#18181b] rounded-full overflow-hidden"><div className={`h-full rounded-full ${stat.b >= stat.a ? 'bg-white' : 'bg-[#71717a]'}`} style={{ width: `${pctB}%` }}></div></div>
+                       <div className="flex h-1.5 gap-1">
+                         <div className="flex-1 bg-[#27272a] rounded-full flex justify-end overflow-hidden"><div className={`h-full rounded-full transition-all ${stat.a >= stat.b ? 'bg-[#1d4ed8]' : 'bg-[#1d4ed8]/40'}`} style={{ width: `${pctA}%` }}></div></div>
+                         <div className="flex-1 bg-[#27272a] rounded-full overflow-hidden"><div className={`h-full rounded-full transition-all ${stat.b >= stat.a ? 'bg-[#d97706]' : 'bg-[#d97706]/40'}`} style={{ width: `${pctB}%` }}></div></div>
                        </div>
                      </div>
                    );
@@ -953,13 +1026,14 @@ const App = () => {
               const isScheduleFlow = tab.id === 'schedule' && ['schedule', 'all-matches', 'match-detail'].includes(activeTab);
               const isStandingsFlow = tab.id === 'standings' && ['standings', 'team-detail'].includes(activeTab);
               const isActive = activeTab === tab.id || isScheduleFlow || isStandingsFlow;
+              const Icon = tab.icon;
 
               return (
                 <button 
                   key={tab.id} onClick={() => setActiveTab(tab.id)} 
                   className={`relative flex flex-col items-center justify-center w-[64px] h-[46px] transition-all duration-300 rounded-[20px] ${isActive ? 'bg-[#213f31]' : ''}`}
                 >
-                  <tab.icon size={22} strokeWidth={isActive ? 2.5 : 2} className={`mb-1 ${isActive ? 'text-[#4ade80]' : 'text-[#71717a]'}`} />
+                  <Icon size={22} strokeWidth={isActive ? 2.5 : 2} className={`mb-1 ${isActive ? 'text-[#4ade80]' : 'text-[#71717a]'}`} />
                   {isActive && <span className="absolute bottom-1.5 w-1 h-1 bg-[#4ade80] rounded-full"></span>}
                 </button>
               );
