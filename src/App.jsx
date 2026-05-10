@@ -69,7 +69,7 @@ const getColor = (team) => TEAM_COLORS[team] || '#3f3f46';
 // ==========================================
 // CẤU HÌNH API
 // ==========================================
-// KHI MANG VỀ LOCAL (MÁY TÍNH CỦA BẠN), HÃY THAY DÒNG NÀY THÀNH:
+// KHI CHẠY TRÊN MÁY TÍNH (VS CODE), ĐỪNG QUÊN THAY DÒNG DƯỚI THÀNH:
 const API_KEY = import.meta.env.VITE_API_KEY || "";
 //const API_KEY = ""; 
 
@@ -83,18 +83,18 @@ const API_LEAGUE_IDS = {
 };
 
 const getCurrentSeason = () => {
-  // Cố định mùa giải 2024 để tài khoản Free không bị API-Sports chặn
+  // Bảng xếp hạng vẫn dùng 2024 vì nó không yêu cầu tham số 'date'
   return 2024;
 };
 
-// Tạo mảng Ngày tháng động (Lùi về giữa tháng 5/2025 để hiển thị các trận đấu mùa 2024)
+// Khôi phục lại ngày tháng thực tế (Hôm nay)
 const generateDates = () => {
   const dates = [];
-  const baseDate = new Date(2025, 4, 15); // Tháng 4 trong Javascript tương ứng với Tháng 5 thực tế
+  const today = new Date(); 
   const dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
   for (let i = -2; i <= 4; i++) {
-    const d = new Date(baseDate);
-    d.setDate(baseDate.getDate() + i);
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
     dates.push({
       day: dayNames[d.getDay()],
       date: d.getDate().toString().padStart(2, '0'),
@@ -105,7 +105,7 @@ const generateDates = () => {
 };
 const dynamicDatesData = generateDates();
 
-// Dữ liệu giả (Mock) khởi tạo cho các trận đấu (Dùng khi API lỗi hoặc trả về rỗng)
+// Dữ liệu giả (Mock) khởi tạo cho các trận đấu
 const mockScheduleData = [
   { id: 0, time: '18:00', league: 'Premier League', teamA: 'Man United', teamB: 'Arsenal', score: '1 - 1', status: 'FT', isLive: false },
   { id: 1, time: '20:00', league: 'Champions League', teamA: 'Barcelona', teamB: 'PSG', score: '2 - 0', status: 'Live', isLive: true },
@@ -215,10 +215,9 @@ const App = () => {
   const [apiStandings, setApiStandings] = useState(topLeaguesStandings);
   const [apiStatus, setApiStatus] = useState(API_KEY ? 'Đang kết nối...' : 'Mock Data');
 
-  // LOGIC GỌI API CHO LỊCH THI ĐẤU (TRẬN ĐẤU NỔI BẬT) VỚI TÍNH NĂNG SMART FALLBACK
+  // LOGIC GỌI API LÁCH LUẬT BẰNG CÁCH CHỈ LẤY THEO DATE
   useEffect(() => {
     const fetchMatches = async () => {
-      // 1. Kiểm tra API Key
       if (!API_KEY) {
         console.log("[Matches] Không tìm thấy API_KEY. Chuyển sang Mock Data.");
         setApiMatches(mockScheduleData);
@@ -229,36 +228,34 @@ const App = () => {
       setIsApiLoading(true);
       try {
         const targetDate = dynamicDatesData[selectedDateIndex].fullDate;
-        const activeSeason = getCurrentSeason();
-        console.log(`[Matches] Gọi API Ngoại Hạng Anh (mùa ${activeSeason}) ngày ${targetDate}...`);
+        console.log(`[Matches] Gọi API lấy toàn bộ trận đấu trong ngày ${targetDate} để lách luật season...`);
         
-        const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=39&season=${activeSeason}&date=${targetDate}`, {
+        // Gọi API KHÔNG kèm season và league để tránh bị chặn
+        const response = await fetch(`https://v3.football.api-sports.io/fixtures?date=${targetDate}`, {
           method: 'GET',
           headers: { 'x-apisports-key': API_KEY }
         });
         const data = await response.json();
 
-        // 2. Xử lý khi API báo lỗi (Ví dụ: hết lượt tải, tài khoản free)
         if (data.errors && Object.keys(data.errors).length > 0) {
-          console.warn("[Matches] Lỗi từ API-Sports (Có thể do tài khoản Free). Chuyển về Mock Data.", data.errors);
+          console.warn("[Matches] Lỗi từ API-Sports:", data.errors);
           setApiMatches(mockScheduleData);
           setApiStatus('Mock Data (Lỗi API)');
           setIsApiLoading(false);
           return;
         }
 
-        // 3. Xử lý khi API gọi thành công
         if (data.response) {
-          // TH1: Ngày đó không có trận đấu nào HOẶC gói Free không cho phép lấy mùa giải năm nay => Mảng rỗng []
-          if (data.response.length === 0) {
-            console.log("[Matches] API trả về 0 trận đấu. Tự động hiển thị Mock Data để giao diện không bị trống.");
+          // Lọc ngầm bằng Javascript để chỉ lấy các trận Premier League (ID: 39)
+          const premierLeagueMatches = data.response.filter(item => item.league.id === 39);
+
+          if (premierLeagueMatches.length === 0) {
+            console.log("[Matches] Hôm nay không có trận Premier League nào. Hiển thị Mock Data.");
             setApiMatches(mockScheduleData);
             setApiStatus('Mock Data (Trống)');
-          } 
-          // TH2: Lấy được dữ liệu thật
-          else {
-            console.log(`[Matches] API trả về ${data.response.length} trận đấu!`);
-            const fetchedMatches = data.response.map(item => {
+          } else {
+            console.log(`[Matches] Lọc thành công ${premierLeagueMatches.length} trận Premier League!`);
+            const fetchedMatches = premierLeagueMatches.map(item => {
               const isLive = ['1H', '2H', 'HT', 'ET', 'P'].includes(item.fixture.status.short);
               const statusMap = {
                 'NS': 'Sắp đá', 'FT': 'FT', 'HT': 'Nghỉ', '1H': 'Hiệp 1', '2H': 'Hiệp 2', 'CANC': 'Hủy', 'PST': 'Hoãn'
