@@ -83,7 +83,6 @@ const API_LEAGUE_IDS = {
 };
 
 const getCurrentSeason = () => {
-  // Bảng xếp hạng vẫn dùng 2024 vì nó không yêu cầu tham số 'date'
   return 2024;
 };
 
@@ -105,27 +104,20 @@ const generateDates = () => {
 };
 const dynamicDatesData = generateDates();
 
-// Dữ liệu giả (Mock) khởi tạo cho các trận đấu
+// Dữ liệu giả (Mock)
 const mockScheduleData = [
-  { id: 0, time: '18:00', league: 'Premier League', teamA: 'Man United', teamB: 'Arsenal', score: '1 - 1', status: 'FT', isLive: false },
-  { id: 1, time: '20:00', league: 'Champions League', teamA: 'Barcelona', teamB: 'PSG', score: '2 - 0', status: 'Live', isLive: true },
-  { id: 2, time: '22:30', league: 'Premier League', teamA: 'Man City', teamB: 'Liverpool', score: '0 - 0', status: 'Sắp đá', isLive: false },
-  { id: 3, time: '01:45', league: 'La Liga', teamA: 'Real Madrid', teamB: 'Girona', score: '- - -', status: 'Ngày mai', isLive: false },
-  { id: 4, time: '03:00', league: 'Serie A', teamA: 'Juventus', teamB: 'AC Milan', score: '- - -', status: 'Ngày mai', isLive: false }
+  { id: 1035048, time: '20:00', league: 'Premier League', teamA: 'Man United', teamB: 'Arsenal', score: '1 - 1', status: 'FT', isLive: false },
+  { id: 1035049, time: '22:30', league: 'Premier League', teamA: 'Man City', teamB: 'Liverpool', score: '0 - 0', status: 'Sắp đá', isLive: false }
 ];
 
-const teamALineup = [{ id: 'a1', name: 'Ter Stegen', number: '1', top: '90%', left: '50%', rating: '7.5' }, { id: 'a2', name: 'Cancelo', number: '2', top: '78%', left: '15%', rating: '6.8' }, { id: 'a3', name: 'Christensen', number: '15', top: '78%', left: '35%', rating: '7.1' }, { id: 'a4', name: 'Araújo', number: '4', top: '78%', left: '65%', rating: '7.8' }, { id: 'a5', name: 'Koundé', number: '23', top: '78%', left: '85%', rating: '7.0' }, { id: 'a6', name: 'De Jong', number: '21', top: '67%', left: '28%', rating: '8.1' }, { id: 'a7', name: 'Gündoğan', number: '22', top: '67%', left: '50%', rating: '7.4' }, { id: 'a8', name: 'Pedri', number: '8', top: '67%', left: '72%', rating: '7.2' }, { id: 'a9', name: 'Raphinha', number: '11', top: '58%', left: '22%', rating: '8.5' }, { id: 'a10', name: 'Lewandowski', number: '9', top: '58%', left: '50%', rating: '6.5' }, { id: 'a11', name: 'Yamal', number: '27', top: '58%', left: '78%', rating: '9.2' }];
-const teamBLineup = [{ id: 'b1', name: 'Donnarumma', number: '99', top: '10%', left: '50%', rating: '6.0' }, { id: 'b2', name: 'Hakimi', number: '2', top: '22%', left: '15%', rating: '6.5' }, { id: 'b3', name: 'Marquinhos', number: '5', top: '22%', left: '35%', rating: '5.8' }, { id: 'b4', name: 'Škriniar', number: '37', top: '22%', left: '65%', rating: '6.2' }, { id: 'b5', name: 'Hernández', number: '21', top: '22%', left: '85%', rating: '5.5' }, { id: 'b6', name: 'Vitinha', number: '17', top: '33%', left: '28%', rating: '6.9' }, { id: 'b7', name: 'Ugarte', number: '4', top: '33%', left: '50%', rating: '6.1' }, { id: 'b8', name: 'Zaïre-Emery', number: '33', top: '33%', left: '72%', rating: '6.4' }, { id: 'b9', name: 'Dembélé', number: '10', top: '42%', left: '22%', rating: '7.1' }, { id: 'b10', name: 'Mbappé', number: '7', top: '42%', left: '50%', rating: '6.8' }, { id: 'b11', name: 'Barcola', number: '29', top: '42%', left: '78%', rating: '6.0' }];
-const timelineEvents = [{ id: 0, time: "90+5'", type: 'goal', player: 'L. Yamal', assist: 'Raphinha', detail: 'Siêu phẩm sút xa!', side: 'left', isRecent: true }, { id: 1, time: "90'", type: 'info', label: 'Bù giờ 5 phút', side: 'center' }, { id: 2, time: "83'", type: 'sub', playerIn: 'S. Busquets', playerOut: 'P. Alcácer', side: 'left' }, { id: 3, time: "78'", type: 'goal', player: 'S. Busquets', side: 'left' }, { id: 4, time: "71'", type: 'yellow_card', player: 'A. Rabiot', side: 'right' }, { id: 101, time: "60'", type: 'info', label: 'Kiểm soát bóng: 62% - 38%', side: 'center' }, { id: 5, time: "52'", type: 'sub', playerIn: 'A. Gomes', playerOut: 'I. Rakitic', side: 'left' }, { id: 102, time: "50'", type: 'danger', player: 'Raphinha', side: 'left', detail: 'Sút xa dội xà ngang!' }, { id: 6, time: "46'", type: 'half_end', label: 'Hết hiệp 1', side: 'center', extra: '+1\'' }, { id: 7, time: "44'", type: 'goal', player: 'Neymar Jr', side: 'right' }, { id: 103, time: "40'", type: 'danger', player: 'K. Mbappé', side: 'right', detail: 'Bỏ lỡ cơ hội đối mặt' }, { id: 8, time: "31'", type: 'goal_penalty', player: 'K. Mbappé', side: 'right', detail: 'Penalty' }, { id: 11, time: "0'", type: 'match_start', label: 'Bắt đầu', side: 'center' }];
-const statsData = [{ label: 'Số cú sút', a: 14, b: 9 }, { label: 'Sút trúng đích', a: 6, b: 3 }, { label: 'Chuyền bóng', a: 540, b: 320 }, { label: 'Tỷ lệ chuyền', a: 88, b: 79, format: '%' }, { label: 'Phạt góc', a: 5, b: 2 }, { label: 'Thẻ vàng', a: 1, b: 3 }];
-const topLeaguesStandings = {
-  'Premier League': [{ pos: 1, team: 'Arsenal', p: 38, w: 28, d: 5, l: 5, pts: 89 }, { pos: 2, team: 'Man City', p: 38, w: 28, d: 4, l: 6, pts: 88 }, { pos: 3, team: 'Liverpool', p: 38, w: 24, d: 10, l: 4, pts: 82 }, { pos: 4, team: 'Aston Villa', p: 38, w: 20, d: 8, l: 10, pts: 68 }, { pos: 5, team: 'Tottenham', p: 38, w: 20, d: 6, l: 12, pts: 66 }, { pos: 6, team: 'Chelsea', p: 38, w: 18, d: 9, l: 11, pts: 63 }],
-  'La Liga': [{ pos: 1, team: 'Real Madrid', p: 38, w: 29, d: 8, l: 1, pts: 95 }, { pos: 2, team: 'Barcelona', p: 38, w: 26, d: 7, l: 5, pts: 85 }, { pos: 3, team: 'Girona', p: 38, w: 25, d: 6, l: 7, pts: 81 }, { pos: 4, team: 'Atletico', p: 38, w: 24, d: 4, l: 10, pts: 76 }, { pos: 5, team: 'Athletic Club', p: 38, w: 19, d: 11, l: 8, pts: 68 }],
-  'Champions League': [{ pos: 1, team: 'Real Madrid', p: 8, w: 7, d: 1, l: 0, pts: 22 }, { pos: 2, team: 'Man City', p: 8, w: 6, d: 2, l: 0, pts: 20 }, { pos: 3, team: 'Bayern', p: 8, w: 6, d: 1, l: 1, pts: 19 }, { pos: 4, team: 'Barcelona', p: 8, w: 5, d: 2, l: 1, pts: 17 }, { pos: 5, team: 'Arsenal', p: 8, w: 5, d: 1, l: 2, pts: 16 }]
-};
+const mockTeamALineup = [{ id: 'a1', name: 'De Gea', number: '1', top: '90%', left: '50%' }, { id: 'a2', name: 'Dalot', number: '20', top: '78%', left: '20%' }, { id: 'a3', name: 'Varane', number: '19', top: '78%', left: '50%' }, { id: 'a4', name: 'Shaw', number: '23', top: '78%', left: '80%' }, { id: 'a6', name: 'Casemiro', number: '18', top: '65%', left: '35%' }, { id: 'a7', name: 'Eriksen', number: '14', top: '65%', left: '65%' }, { id: 'a9', name: 'Antony', number: '21', top: '50%', left: '20%' }, { id: 'a10', name: 'Fernandes', number: '8', top: '50%', left: '50%' }, { id: 'a11', name: 'Rashford', number: '10', top: '50%', left: '80%' }, { id: 'a12', name: 'Martial', number: '9', top: '35%', left: '50%' }];
+const mockTeamBLineup = [{ id: 'b1', name: 'Ramsdale', number: '1', top: '10%', left: '50%' }, { id: 'b2', name: 'White', number: '4', top: '22%', left: '20%' }, { id: 'b3', name: 'Saliba', number: '12', top: '22%', left: '50%' }, { id: 'b4', name: 'Gabriel', number: '6', top: '22%', left: '80%' }, { id: 'b6', name: 'Partey', number: '5', top: '35%', left: '35%' }, { id: 'b7', name: 'Xhaka', number: '34', top: '35%', left: '65%' }, { id: 'b9', name: 'Saka', number: '7', top: '50%', left: '20%' }, { id: 'b10', name: 'Odegaard', number: '8', top: '50%', left: '50%' }, { id: 'b11', name: 'Martinelli', number: '11', top: '50%', left: '80%' }, { id: 'b12', name: 'Jesus', number: '9', top: '65%', left: '50%' }];
+const mockTimelineEvents = [{ id: 0, time: "90+5'", type: 'goal', player: 'Rashford', assist: 'Fernandes', detail: 'Siêu phẩm', side: 'left', isRecent: true }];
+const mockStatsData = [{ label: 'Số cú sút', a: 14, b: 9 }, { label: 'Sút trúng đích', a: 6, b: 3 }, { label: 'Chuyền bóng', a: 540, b: 320 }, { label: 'Tỷ lệ chuyền', a: 88, b: 79, format: '%' }, { label: 'Phạt góc', a: 5, b: 2 }, { label: 'Thẻ vàng', a: 1, b: 3 }];
+const topLeaguesStandings = { 'Premier League': [{ pos: 1, team: 'Arsenal', p: 38, w: 28, d: 5, l: 5, pts: 89 }] };
 const mockH2HList = ['3 - 2', '1 - 1', '0 - 2', '2 - 1', '0 - 0'];
-const mockRecentA = [{ score: '2 - 0', opp: 'Real Madrid' }, { score: '1 - 1', opp: 'Bayern' }, { score: '3 - 1', opp: 'Juventus' }];
-const mockRecentB = [{ score: '1 - 0', opp: 'Liverpool' }, { score: '3 - 0', opp: 'Arsenal' }, { score: '2 - 2', opp: 'Man City' }];
+const mockRecentA = [{ score: '2 - 0', opp: 'Real Madrid' }, { score: '1 - 1', opp: 'Bayern' }];
+const mockRecentB = [{ score: '1 - 0', opp: 'Liverpool' }, { score: '3 - 0', opp: 'Arsenal' }];
 const mockKeyPlayers = { teamA: { name: 'Lewandowski', img: 'https://ui-avatars.com/api/?name=Robert+Lewandowski&background=1d4ed8&color=fff&size=128&bold=true', attack: 85, pass: 80, def: 30, assist: 1, goal: 1 }, teamB: { name: 'Mbappé', img: 'https://ui-avatars.com/api/?name=Kylian+Mbappe&background=1e3a8a&color=fff&size=128&bold=true', attack: 92, pass: 85, def: 20, assist: 0, goal: 2 } };
 
 
@@ -206,11 +198,16 @@ const App = () => {
   const [selectedLeagueFilter, setSelectedLeagueFilter] = useState('Tất cả');
   const [selectedStandingsLeague, setSelectedStandingsLeague] = useState('Champions League');
   const [selectedTeam, setSelectedTeam] = useState(null);
-  const [selectedMatch, setSelectedMatch] = useState(mockScheduleData[1]); 
+  const [selectedMatch, setSelectedMatch] = useState(mockScheduleData[0]); 
 
   // === STATE CHO API ===
   const [isApiLoading, setIsApiLoading] = useState(false);
   const [isStandingsLoading, setIsStandingsLoading] = useState(false);
+  
+  // State mới cho dữ liệu chi tiết của một trận đấu
+  const [matchDetailsData, setMatchDetailsData] = useState(null);
+  const [isDetailsLoading, setIsDetailsLoading] = useState(false);
+
   const [apiMatches, setApiMatches] = useState(mockScheduleData);
   const [apiStandings, setApiStandings] = useState(topLeaguesStandings);
   const [apiStatus, setApiStatus] = useState(API_KEY ? 'Đang kết nối...' : 'Mock Data');
@@ -219,7 +216,6 @@ const App = () => {
   useEffect(() => {
     const fetchMatches = async () => {
       if (!API_KEY) {
-        console.log("[Matches] Không tìm thấy API_KEY. Chuyển sang Mock Data.");
         setApiMatches(mockScheduleData);
         setApiStatus('Mock Data');
         return;
@@ -228,7 +224,6 @@ const App = () => {
       setIsApiLoading(true);
       try {
         const targetDate = dynamicDatesData[selectedDateIndex].fullDate;
-        console.log(`[Matches] Gọi API lấy toàn bộ trận đấu trong ngày ${targetDate} để lách luật season...`);
         
         // Gọi API KHÔNG kèm season và league để tránh bị chặn
         const response = await fetch(`https://v3.football.api-sports.io/fixtures?date=${targetDate}`, {
@@ -238,7 +233,6 @@ const App = () => {
         const data = await response.json();
 
         if (data.errors && Object.keys(data.errors).length > 0) {
-          console.warn("[Matches] Lỗi từ API-Sports:", data.errors);
           setApiMatches(mockScheduleData);
           setApiStatus('Mock Data (Lỗi API)');
           setIsApiLoading(false);
@@ -250,11 +244,9 @@ const App = () => {
           const premierLeagueMatches = data.response.filter(item => item.league.id === 39);
 
           if (premierLeagueMatches.length === 0) {
-            console.log("[Matches] Hôm nay không có trận Premier League nào. Hiển thị Mock Data.");
             setApiMatches(mockScheduleData);
             setApiStatus('Mock Data (Trống)');
           } else {
-            console.log(`[Matches] Lọc thành công ${premierLeagueMatches.length} trận Premier League!`);
             const fetchedMatches = premierLeagueMatches.map(item => {
               const isLive = ['1H', '2H', 'HT', 'ET', 'P'].includes(item.fixture.status.short);
               const statusMap = {
@@ -264,7 +256,7 @@ const App = () => {
               const timeStr = dateObj.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
 
               return {
-                id: item.fixture.id,
+                id: item.fixture.id, // ID thật để lấy Detail
                 time: timeStr,
                 league: 'Premier League', 
                 teamA: item.teams.home.name,
@@ -293,12 +285,10 @@ const App = () => {
     fetchMatches();
   }, [selectedDateIndex]);
 
-  // LOGIC GỌI API CHO BẢNG XẾP HẠNG VỚI TÍNH NĂNG SMART FALLBACK
+  // LOGIC GỌI API CHO BẢNG XẾP HẠNG
   useEffect(() => {
     const fetchRealStandings = async () => {
-      if (!API_KEY) {
-        return; 
-      }
+      if (!API_KEY) return; 
       
       setIsStandingsLoading(true);
       try {
@@ -310,11 +300,6 @@ const App = () => {
           headers: { 'x-apisports-key': API_KEY }
         });
         const data = await response.json();
-
-        if (data.errors && Object.keys(data.errors).length > 0) {
-          console.warn("[Standings] Lỗi từ API-Sports. Giữ nguyên Mock Data.", data.errors);
-          return;
-        }
 
         if (data.response && data.response.length > 0) {
           const allStandings = data.response[0].league.standings.flat();
@@ -330,13 +315,7 @@ const App = () => {
           }));
           
           fetchedStandings.sort((a, b) => a.pos - b.pos);
-          
-          setApiStandings(prev => ({
-            ...prev,
-            [selectedStandingsLeague]: fetchedStandings
-          }));
-        } else {
-          console.warn("[Standings] API trả về mảng rỗng (Có thể do giới hạn Free Plan). Giữ Mock Data.");
+          setApiStandings(prev => ({ ...prev, [selectedStandingsLeague]: fetchedStandings }));
         }
       } catch (error) {
         console.error("[Standings] Lỗi Network:", error);
@@ -347,6 +326,43 @@ const App = () => {
 
     fetchRealStandings();
   }, [selectedStandingsLeague]);
+
+  // === NEW LOGIC: GỌI API CHO CHI TIẾT TRẬN ĐẤU ===
+  useEffect(() => {
+    // Chỉ gọi API khi mở tab chi tiết trận đấu và có ID
+    if (activeTab !== 'match-detail' || !selectedMatch?.id) return;
+
+    const fetchMatchDetails = async () => {
+      if (!API_KEY) {
+        setMatchDetailsData(null);
+        return;
+      }
+      setIsDetailsLoading(true);
+      try {
+        // API /fixtures?id=... trả về toàn bộ: stats, lineups, events của 1 trận duy nhất
+        const response = await fetch(`https://v3.football.api-sports.io/fixtures?id=${selectedMatch.id}`, {
+          method: 'GET',
+          headers: { 'x-apisports-key': API_KEY }
+        });
+        const data = await response.json();
+        
+        if (data.response && data.response.length > 0) {
+          console.log("[Detail] Đã tải thành công chi tiết trận đấu!");
+          setMatchDetailsData(data.response[0]);
+        } else {
+          setMatchDetailsData(null);
+        }
+      } catch (error) {
+        console.error("[Detail] Lỗi gọi chi tiết:", error);
+        setMatchDetailsData(null);
+      } finally {
+        setIsDetailsLoading(false);
+      }
+    };
+
+    fetchMatchDetails();
+  }, [selectedMatch, activeTab]);
+
 
   const handleMatchClick = (match) => {
     setSelectedMatch(match);
@@ -502,7 +518,6 @@ const App = () => {
             </div>
             <div className="flex flex-col relative pb-2 pt-1 min-h-[250px]">
               
-              {/* Hiệu ứng loading quay khi đang gọi API */}
               {isStandingsLoading && (
                 <div className="absolute inset-0 bg-[#222226]/80 backdrop-blur-sm z-10 flex items-center justify-center">
                   <div className="w-8 h-8 border-[3px] border-[#4ade80] border-t-transparent rounded-full animate-spin"></div>
@@ -545,7 +560,6 @@ const App = () => {
      const upcomingMatches = [
        { id: 201, date: '25/05', opp: 'Chelsea', venue: 'Sân khách', logo: getLogo('Chelsea'), time: '20:00' },
        { id: 202, date: '29/05', opp: 'Real Madrid', venue: 'Sân nhà', logo: getLogo('Real Madrid'), time: '02:00' },
-       { id: 203, date: '02/06', opp: 'Liverpool', venue: 'Sân khách', logo: getLogo('Liverpool'), time: '22:30' },
      ];
 
      return (
@@ -572,30 +586,6 @@ const App = () => {
                 </div>
               </div>
             </div>
-
-            {/* Lịch thi đấu sắp tới */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-[11px] font-bold text-[#71717a] uppercase tracking-wider">Lịch thi đấu sắp tới</h3>
-              </div>
-              <div className="flex flex-col gap-2.5">
-                {upcomingMatches.map((m, i) => (
-                  <div key={i} className="flex items-center justify-between bg-[#222226] border border-[#27272a] rounded-[20px] p-4 hover:border-zinc-700 cursor-pointer transition-colors">
-                    <div className="flex flex-col gap-1 w-[25%]">
-                      <span className="text-[11px] font-bold text-zinc-300">{m.date}</span>
-                      <span className="text-[9px] font-medium text-[#71717a] uppercase tracking-wide">{m.venue}</span>
-                    </div>
-                    <div className="flex items-center gap-3 w-[50%]">
-                      <div className="w-8 h-8 flex-shrink-0 bg-white/5 p-1 rounded-full"><TeamLogo src={m.logo} className="w-full h-full object-contain" /></div>
-                      <span className="text-[13px] font-bold text-white truncate">{m.opp}</span>
-                    </div>
-                    <div className="w-[25%] text-right">
-                      <span className="text-[10px] font-bold text-[#4ade80] bg-[#1e3a2e] px-2.5 py-1.5 rounded-md tracking-wider">{m.time}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
        </div>
      )
@@ -605,35 +595,130 @@ const App = () => {
   const ProfileView = () => { return <div className="h-full bg-[#18181b] p-20 text-white text-center pt-32">Profile View</div> };
 
 
-  // 6. Màn hình Chi tiết Trận Đấu (Match Detail)
+  // ==============================================================
+  // 6. MÀN HÌNH CHI TIẾT TRẬN ĐẤU (ĐÃ TÍCH HỢP DATA API THỰC TẾ)
+  // ==============================================================
   const MatchDetailView = () => {
     if (!selectedMatch) return null;
-    const isUpcoming = ['Sắp đá', 'Ngày mai', 'NS'].includes(selectedMatch.status);
+    
+    // Hàm xử lý đội hình lưới (Grid) do API trả về thành toạ độ % trên màn hình
+    const parseLineupGrid = (apiStartXI, isHome) => {
+      if (!apiStartXI || apiStartXI.length === 0) return isHome ? mockTeamALineup : mockTeamBLineup; // Fallback
+      
+      const rows = {};
+      apiStartXI.forEach(item => {
+          if(!item.player.grid) return;
+          const [y, x] = item.player.grid.split(':');
+          if(!rows[y]) rows[y] = [];
+          rows[y].push({ ...item.player, x: Number(x) });
+      });
 
-    const getRadarCoords = (angleIdx, val, centerX = 110, centerY = 100, radius = 65) => {
-      const angle = (Math.PI * 2 * angleIdx) / 5 - Math.PI / 2;
-      return {
-        x: centerX + radius * val * Math.cos(angle),
-        y: centerY + radius * val * Math.sin(angle)
-      };
+      const parsedLineup = [];
+      const rowKeys = Object.keys(rows).sort((a,b) => Number(a) - Number(b)); 
+      const totalRows = rowKeys.length;
+
+      rowKeys.forEach((y, rowIdx) => {
+          rows[y].sort((a,b) => a.x - b.x); // Sắp xếp theo chiều ngang
+          const colsInRow = rows[y].length;
+          rows[y].forEach((player, colIdx) => {
+              // Tính toán Top % (Dọc)
+              let top = isHome ? 90 - (rowIdx * (70/(totalRows-1 || 1))) : 10 + (rowIdx * (70/(totalRows-1 || 1)));
+              if (y === '1') top = isHome ? 90 : 10; // Cố định Thủ môn
+
+              // Tính toán Left % (Ngang)
+              let left = 50;
+              if (colsInRow > 1) {
+                  const step = 60 / (colsInRow - 1);
+                  left = 20 + (colIdx * step);
+              }
+
+              parsedLineup.push({
+                  id: player.id,
+                  name: player.name.split(' ').pop(), // Lấy tên viết tắt
+                  number: player.number,
+                  top: `${top}%`,
+                  left: `${left}%`
+              });
+          });
+      });
+      return parsedLineup;
     };
 
-    const radarStats = [
-      { label: 'Tấn công', max: 100, a: mockKeyPlayers.teamA.attack, b: mockKeyPlayers.teamB.attack },
-      { label: 'Chuyền', max: 100, a: mockKeyPlayers.teamA.pass, b: mockKeyPlayers.teamB.pass },
-      { label: 'Thủ', max: 100, a: mockKeyPlayers.teamA.def, b: mockKeyPlayers.teamB.def },
-      { label: 'Bàn thắng', max: 5, a: mockKeyPlayers.teamA.goal, b: mockKeyPlayers.teamB.goal },
-      { label: 'Kiến tạo', max: 5, a: mockKeyPlayers.teamA.assist, b: mockKeyPlayers.teamB.assist },
-    ];
+    // --- CHUẨN BỊ DỮ LIỆU TỪ STATE matchDetailsData ---
     
-    const pathA = radarStats.map((s, i) => { const c = getRadarCoords(i, s.a/s.max); return `${c.x},${c.y}`; }).join(' ');
-    const pathB = radarStats.map((s, i) => { const c = getRadarCoords(i, s.b/s.max); return `${c.x},${c.y}`; }).join(' ');
+    // 1. Thống kê (Statistics)
+    let currentStatsData = mockStatsData;
+    let possA = 50, possB = 50;
+    
+    if (matchDetailsData && matchDetailsData.statistics && matchDetailsData.statistics.length === 2) {
+      const statsA = matchDetailsData.statistics[0].statistics;
+      const statsB = matchDetailsData.statistics[1].statistics;
+      
+      const getStat = (arr, t) => { 
+        const item = arr.find(s=>s.type===t); 
+        if(!item || item.value === null) return 0;
+        if(typeof item.value === 'string' && item.value.includes('%')) return parseInt(item.value);
+        return parseInt(item.value); 
+      };
 
+      currentStatsData = [
+        { label: 'Số cú sút', a: getStat(statsA, 'Total Shots'), b: getStat(statsB, 'Total Shots') },
+        { label: 'Sút trúng đích', a: getStat(statsA, 'Shots on Goal'), b: getStat(statsB, 'Shots on Goal') },
+        { label: 'Kiểm soát (%)', a: getStat(statsA, 'Ball Possession'), b: getStat(statsB, 'Ball Possession'), format: '%' },
+        { label: 'Chuyền bóng', a: getStat(statsA, 'Total passes'), b: getStat(statsB, 'Total passes') },
+        { label: 'Phạt góc', a: getStat(statsA, 'Corner Kicks'), b: getStat(statsB, 'Corner Kicks') },
+        { label: 'Phạm lỗi', a: getStat(statsA, 'Fouls'), b: getStat(statsB, 'Fouls') },
+        { label: 'Thẻ vàng', a: getStat(statsA, 'Yellow Cards'), b: getStat(statsB, 'Yellow Cards') },
+      ];
+      
+      possA = getStat(statsA, 'Ball Possession') || 50;
+      possB = 100 - possA;
+    }
+
+    // 2. Đội hình (Lineups)
+    let currentLineupA = mockTeamALineup;
+    let currentLineupB = mockTeamBLineup;
+    let formA = '4-3-3', formB = '4-3-3';
+    
+    if (matchDetailsData && matchDetailsData.lineups && matchDetailsData.lineups.length === 2) {
+        formA = matchDetailsData.lineups[0].formation || '-';
+        formB = matchDetailsData.lineups[1].formation || '-';
+        currentLineupA = parseLineupGrid(matchDetailsData.lineups[0].startXI, true);
+        currentLineupB = parseLineupGrid(matchDetailsData.lineups[1].startXI, false);
+    }
+
+    // 3. Sự kiện Timeline (Events)
+    let currentEvents = mockTimelineEvents;
+    if (matchDetailsData && matchDetailsData.events) {
+       currentEvents = matchDetailsData.events.map((ev, idx) => {
+           const isHome = ev.team.id === matchDetailsData.teams.home.id;
+           let evType = 'info';
+           if (ev.type === 'Goal') evType = 'goal';
+           if (ev.type === 'Card' && ev.detail === 'Yellow Card') evType = 'yellow_card';
+           if (ev.type === 'Card' && ev.detail.includes('Red')) evType = 'red_card';
+           if (ev.type === 'subst') evType = 'sub';
+
+           return {
+               id: idx,
+               time: `${ev.time.elapsed}'${ev.time.extra ? `+${ev.time.extra}` : ''}`,
+               type: evType,
+               player: ev.player.name,
+               playerIn: ev.type === 'subst' ? ev.assist.name : null,
+               playerOut: ev.type === 'subst' ? ev.player.name : null,
+               detail: ev.type === 'Goal' ? ev.detail : null,
+               side: isHome ? 'left' : 'right',
+               isRecent: idx === matchDetailsData.events.length - 1
+           };
+       }).reverse(); // Xếp sự kiện mới nhất lên trên
+    }
+
+    const isUpcoming = ['Sắp đá', 'Ngày mai', 'NS'].includes(selectedMatch.status);
     const colorA = getColor(selectedMatch.teamA);
     const colorB = getColor(selectedMatch.teamB);
 
     return (
       <div className="flex flex-col h-full bg-[#18181b] text-zinc-100 overflow-y-auto [&::-webkit-scrollbar]:hidden pb-28 pt-14">
+        
         {/* Top Navigation */}
         <div className="px-5 pb-3 flex justify-between items-center">
           <button onClick={() => setActiveTab('schedule')} className="w-10 h-10 flex items-center justify-center bg-[#27272a] rounded-full active:scale-95"><ChevronLeft size={18} className="text-zinc-300" /></button>
@@ -646,7 +731,10 @@ const App = () => {
         </div>
         
         {/* Scoreboard */}
-        <div className="px-5 py-6 flex justify-between items-center">
+        <div className="px-5 py-4 flex justify-between items-center relative">
+          {/* Huy hiệu Loading mờ khi đang lấy chi tiết */}
+          {isDetailsLoading && <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-[#27272a] px-3 py-1 rounded-full text-[10px] text-zinc-400 font-bold flex items-center gap-2"><div className="w-3 h-3 border-2 border-[#4ade80] border-t-transparent rounded-full animate-spin"></div> Cập nhật dữ liệu...</div>}
+
           <div className="flex flex-col items-center gap-3 w-1/3"><div className="w-14 h-14 shrink-0 bg-white/5 p-2 rounded-full"><TeamLogo src={selectedMatch.logoA || getLogo(selectedMatch.teamA)} className="w-full h-full object-contain drop-shadow-lg" /></div><span className="text-[13px] font-bold text-center text-white">{selectedMatch.teamA}</span></div>
           <div className="flex flex-col items-center w-1/3">
             <div className="text-[40px] font-black tracking-tighter flex items-center gap-3 relative">
@@ -657,7 +745,7 @@ const App = () => {
             </div>
             <div className="mt-1">
                {selectedMatch.isLive ? (
-                 <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/20 px-2.5 py-0.5 rounded text-red-500 shadow-sm"><Activity size={12} className="animate-pulse" /><span className="text-[10px] font-bold">55'</span></div>
+                 <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/20 px-2.5 py-0.5 rounded text-red-500 shadow-sm"><Activity size={12} className="animate-pulse" /><span className="text-[10px] font-bold">LIVE</span></div>
                ) : (
                  <span className="text-[11px] font-bold text-[#a1a1aa] bg-[#27272a] px-3 py-1 rounded-full">{selectedMatch.time}</span>
                )}
@@ -666,299 +754,145 @@ const App = () => {
           <div className="flex flex-col items-center gap-3 w-1/3"><div className="w-14 h-14 shrink-0 bg-white/5 p-2 rounded-full"><TeamLogo src={selectedMatch.logoB || getLogo(selectedMatch.teamB)} className="w-full h-full object-contain drop-shadow-lg" /></div><span className="text-[13px] font-bold text-center text-white">{selectedMatch.teamB}</span></div>
         </div>
 
-        {/* Tabs - Đổi tên thành Chi tiết */}
+        {/* Tabs Điều hướng */}
         <div className="flex bg-[#27272a] p-1 rounded-full mx-5 mb-6 mt-4">
           {['Chi tiết', 'Đội hình', 'Thống kê'].map(t => <button key={t} onClick={() => setSelectedMatchTab(t)} className={`flex-1 py-2.5 text-[13px] font-bold rounded-full transition-all ${selectedMatchTab === t ? 'bg-[#18181b] text-white shadow-sm' : 'text-[#a1a1aa] hover:text-white'}`}>{t}</button>)}
         </div>
 
-        <div className="flex-1 bg-[#202024] rounded-t-[36px] p-6">
+        <div className="flex-1 bg-[#202024] rounded-t-[36px] p-6 min-h-[400px]">
           
-          {/* TAB 1: CHI TIẾT */}
+          {/* --------------------- TAB 1: CHI TIẾT (TIMELINE) --------------------- */}
           {selectedMatchTab === 'Chi tiết' && (
             <div className="flex flex-col gap-8">
               
-              {/* TRƯỜNG HỢP: SẮP ĐÁ */}
-              {isUpcoming ? (
-                <>
-                  {/* Lịch sử đối đầu */}
-                  <div>
-                    <h3 className="text-[11px] font-bold text-[#71717a] uppercase tracking-wider mb-4 flex items-center gap-2"><Swords size={14}/> Lịch sử đối đầu</h3>
-                    
-                    {/* Thống kê Thắng/Hòa/Thua */}
-                    <div className="mb-4 px-1">
-                      <div className="flex justify-between text-[10px] font-bold mb-2">
-                        <span style={{ color: colorA }}>2 Thắng</span>
-                        <span className="text-[#a1a1aa]">2 Hòa</span>
-                        <span style={{ color: colorB }}>1 Thắng</span>
-                      </div>
-                      <div className="flex h-2 w-full bg-[#18181b] rounded-full overflow-hidden">
-                        <div className="h-full" style={{ width: '40%', backgroundColor: colorA }}></div>
-                        <div className="h-full bg-[#71717a]" style={{ width: '40%' }}></div>
-                        <div className="h-full" style={{ width: '20%', backgroundColor: colorB }}></div>
-                      </div>
-                    </div>
-
-                    {/* Danh sách thẻ đối đầu (Đã thu nhỏ 30%) */}
-                    <div className="flex gap-3 overflow-x-auto snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2">
-                      {mockH2HList.map((score, i) => (
-                        <div key={i} className="snap-start shrink-0 flex items-center justify-center gap-2.5 bg-[#18181b] border border-[#27272a] px-3 py-2 rounded-[12px]">
-                          <TeamLogo src={selectedMatch.logoA || getLogo(selectedMatch.teamA)} className="w-5 h-5 object-contain drop-shadow-sm" />
-                          <span className="text-[13px] font-black tracking-wider text-white">{score}</span>
-                          <TeamLogo src={selectedMatch.logoB || getLogo(selectedMatch.teamB)} className="w-5 h-5 object-contain drop-shadow-sm" />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Phong độ (Gộp 2 đội) */}
-                  <div>
-                    <h3 className="text-[11px] font-bold text-[#71717a] uppercase tracking-wider mb-4 flex items-center gap-2"><Activity size={14}/> Phong độ</h3>
-                    <div className="flex flex-col gap-4">
-                      {/* Hàng Đội A */}
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 shrink-0 bg-[#18181b] rounded-full flex items-center justify-center border border-[#27272a]">
-                          <TeamLogo src={selectedMatch.logoA || getLogo(selectedMatch.teamA)} className="w-6 h-6 object-contain drop-shadow-sm" />
-                        </div>
-                        <div className="flex gap-2.5 overflow-x-auto snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                          {mockRecentA.map((m, i) => (
-                            <div key={i} className="snap-start shrink-0 flex items-center justify-center gap-2.5 bg-[#18181b] border border-[#27272a] px-3 py-2 rounded-[12px]">
-                              <TeamLogo src={selectedMatch.logoA || getLogo(selectedMatch.teamA)} className="w-5 h-5 object-contain drop-shadow-sm" />
-                              <span className="text-[13px] font-black tracking-wider text-white">{m.score}</span>
-                              <TeamLogo src={getLogo(m.opp)} className="w-5 h-5 object-contain drop-shadow-sm" />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      {/* Hàng Đội B */}
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 shrink-0 bg-[#18181b] rounded-full flex items-center justify-center border border-[#27272a]">
-                          <TeamLogo src={selectedMatch.logoB || getLogo(selectedMatch.teamB)} className="w-6 h-6 object-contain drop-shadow-sm" />
-                        </div>
-                        <div className="flex gap-2.5 overflow-x-auto snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                          {mockRecentB.map((m, i) => (
-                            <div key={i} className="snap-start shrink-0 flex items-center justify-center gap-2.5 bg-[#18181b] border border-[#27272a] px-3 py-2 rounded-[12px]">
-                              <TeamLogo src={selectedMatch.logoB || getLogo(selectedMatch.teamB)} className="w-5 h-5 object-contain drop-shadow-sm" />
-                              <span className="text-[13px] font-black tracking-wider text-white">{m.score}</span>
-                              <TeamLogo src={getLogo(m.opp)} className="w-5 h-5 object-contain drop-shadow-sm" />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Cầu thủ nổi bật - Biểu đồ Radar */}
-                  <div>
-                    <h3 className="text-[11px] font-bold text-[#71717a] uppercase tracking-wider mb-4 flex items-center gap-2"><Star size={14}/> Nổi bật trận trước</h3>
-                    
-                    <div className="bg-[#18181b] border border-[#27272a] rounded-[24px] p-5 flex flex-col items-center">
-                      {/* Tiêu đề (Legends) */}
-                      <div className="flex justify-between items-center w-full mb-4">
-                        <div className="flex items-center gap-3 w-[45%]">
-                           <div className="relative">
-                             <img src={mockKeyPlayers.teamA.img} alt={mockKeyPlayers.teamA.name} className="w-10 h-10 rounded-full bg-[#27272a] border-2 border-[#10b981] object-cover" />
-                             <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-[#10b981] border-2 border-[#18181b] rounded-full"></div>
-                           </div>
-                           <div className="flex flex-col overflow-hidden">
-                             <span className="text-[11px] font-bold text-[#10b981] truncate">{mockKeyPlayers.teamA.name}</span>
-                             <span className="text-[9px] font-semibold text-[#71717a] uppercase truncate">{selectedMatch.teamA}</span>
-                           </div>
-                        </div>
-                        
-                        <span className="text-[11px] font-black text-[#3f3f46]">VS</span>
-                        
-                        <div className="flex items-center gap-3 w-[45%] flex-row-reverse text-right">
-                           <div className="relative">
-                             <img src={mockKeyPlayers.teamB.img} alt={mockKeyPlayers.teamB.name} className="w-10 h-10 rounded-full bg-[#27272a] border-2 border-[#3b82f6] object-cover" />
-                             <div className="absolute -bottom-0.5 -left-0.5 w-3 h-3 bg-[#3b82f6] border-2 border-[#18181b] rounded-full"></div>
-                           </div>
-                           <div className="flex flex-col items-end overflow-hidden">
-                             <span className="text-[11px] font-bold text-[#3b82f6] truncate">{mockKeyPlayers.teamB.name}</span>
-                             <span className="text-[9px] font-semibold text-[#71717a] uppercase truncate">{selectedMatch.teamB}</span>
-                           </div>
-                        </div>
-                      </div>
-
-                      {/* Radar Chart SVG */}
-                      <div className="w-[220px] h-[200px] relative mt-2">
-                        <svg viewBox="0 0 220 200" className="w-full h-full overflow-visible">
-                          {/* Khung mạng nhện (Grids) */}
-                          {[0.25, 0.5, 0.75, 1].map((level, i) => {
-                            const points = radarStats.map((_, j) => {
-                              const c = getRadarCoords(j, level);
-                              return `${c.x},${c.y}`;
-                            }).join(' ');
-                            return <polygon key={`grid-${i}`} points={points} fill="none" stroke="#27272a" strokeWidth="1" strokeDasharray={level === 1 ? "0" : "3,3"} />;
-                          })}
-                          
-                          {/* Các trục nối từ tâm ra (Axes) */}
-                          {radarStats.map((_, i) => {
-                            const c = getRadarCoords(i, 1);
-                            return <line key={`axis-${i}`} x1="110" y1="100" x2={c.x} y2={c.y} stroke="#27272a" strokeWidth="1" />;
-                          })}
-                          
-                          {/* Mảng màu của Đội A và Đội B (Polygons) */}
-                          <polygon points={pathA} fill="rgba(16, 185, 129, 0.25)" stroke="#10b981" strokeWidth="1.5" strokeLinejoin="round" />
-                          <polygon points={pathB} fill="rgba(59, 130, 246, 0.25)" stroke="#3b82f6" strokeWidth="1.5" strokeLinejoin="round" />
-
-                          {/* Nhãn (Labels) cho 5 chỉ số và Điểm số 2 đội */}
-                          {radarStats.map((stat, i) => {
-                            const c = getRadarCoords(i, 1.35);
-                            return (
-                              <text key={`lbl-${i}`} x={c.x} y={c.y} fontSize="9" fontWeight="700" textAnchor="middle" dominantBaseline="middle">
-                                <tspan fill="#10b981">{stat.a}</tspan>
-                                <tspan fill="#a1a1aa">   {stat.label}   </tspan>
-                                <tspan fill="#3b82f6">{stat.b}</tspan>
-                              </text>
-                            );
-                          })}
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </>
+              {isUpcoming && !matchDetailsData?.events ? (
+                  <div className="text-center py-10 text-[#71717a] text-sm font-medium">Trận đấu chưa diễn ra, chưa có dòng thời gian.</div>
               ) : (
-                /* TRƯỜNG HỢP: ĐÃ ĐÁ / ĐANG LIVE */
                 <>
                   <div className="flex flex-col gap-5 mb-2">
-                    {/* Kiểm soát bóng */}
+                    {/* Module Kiểm soát bóng động */}
                     <div className="bg-[#18181b] border border-[#27272a] p-5 rounded-[24px]">
                        <h3 className="text-[11px] font-bold text-[#71717a] uppercase tracking-wider mb-3 text-center">Kiểm soát bóng</h3>
                        <div className="flex justify-between items-end mb-2 px-1">
-                          <span className="text-[20px] font-black text-[#4ade80]">62%</span>
-                          <span className="text-[20px] font-black text-white">38%</span>
+                          <span className={`text-[20px] font-black ${possA >= possB ? 'text-[#4ade80]' : 'text-white'}`}>{possA}%</span>
+                          <span className={`text-[20px] font-black ${possB > possA ? 'text-[#4ade80]' : 'text-white'}`}>{possB}%</span>
                        </div>
                        <div className="flex h-2.5 gap-1.5">
-                         <div className="flex-1 bg-[#27272a] rounded-full overflow-hidden"><div className="h-full bg-[#4ade80] w-[62%] float-right"></div></div>
-                         <div className="flex-1 bg-[#27272a] rounded-full overflow-hidden"><div className="h-full bg-white w-[38%]"></div></div>
-                       </div>
-                    </div>
-
-                    {/* Cầu thủ xuất sắc nhất */}
-                    <div className="bg-[#1c3227] border border-[#224f38] p-4 rounded-[24px] flex items-center gap-4">
-                       <div className="w-12 h-12 rounded-full bg-[#4ade80]/20 flex items-center justify-center border border-[#4ade80]/30">
-                         <Medal size={24} className="text-[#4ade80]"/>
-                       </div>
-                       <div className="flex-1">
-                         <h3 className="text-[10px] font-bold text-[#4ade80] uppercase tracking-wider mb-1">Cầu thủ xuất sắc nhất</h3>
-                         <span className="text-[15px] font-bold text-white">L. Yamal</span> <span className="text-[11px] text-[#a1a1aa]">({selectedMatch.teamA})</span>
-                       </div>
-                       <div className="w-10 h-10 rounded-xl bg-[#4ade80] flex items-center justify-center text-[#18181b] font-black text-base shadow-md">
-                         9.2
+                         <div className="flex-1 bg-[#27272a] rounded-full overflow-hidden"><div className={`h-full w-[${possA}%] float-right ${possA >= possB ? 'bg-[#4ade80]' : 'bg-white'}`} style={{width: `${possA}%`}}></div></div>
+                         <div className="flex-1 bg-[#27272a] rounded-full overflow-hidden"><div className={`h-full w-[${possB}%] ${possB > possA ? 'bg-[#4ade80]' : 'bg-white'}`} style={{width: `${possB}%`}}></div></div>
                        </div>
                     </div>
                   </div>
 
-                  {/* Timeline Sự kiện */}
+                  {/* Dòng thời gian Event thực tế từ API */}
                   <h3 className="text-[11px] font-bold text-[#71717a] uppercase tracking-wider mt-4 mb-3">Dòng thời gian</h3>
-                  <div className="space-y-7 relative before:absolute before:inset-0 before:left-1/2 before:-translate-x-1/2 before:h-full before:w-0.5 before:bg-[#27272a]">
-                    {timelineEvents.map((event) => (
-                      <div key={event.id} className="relative flex items-center justify-between w-full group">
-                        <div className={`w-[42%] flex flex-col ${event.side === 'left' ? 'items-end text-right' : 'items-start text-left opacity-0'}`}>
-                          {event.side === 'left' && (
-                            <>
-                              <div className="flex items-center gap-2 justify-end">
-                                {event.type.includes('goal') && <span className="text-sm drop-shadow-md">⚽</span>}
-                                <span className={`font-bold ${event.isRecent ? 'text-[#4ade80] text-[14px]' : 'text-white text-[13px]'}`}>{event.player || event.playerIn}</span>
+                  {currentEvents.length === 0 ? (
+                     <div className="text-center py-4 text-[#71717a] text-xs">Chưa có sự kiện nào nổi bật</div>
+                  ) : (
+                    <div className="space-y-7 relative before:absolute before:inset-0 before:left-1/2 before:-translate-x-1/2 before:h-full before:w-0.5 before:bg-[#27272a]">
+                      {currentEvents.map((event) => (
+                        <div key={event.id} className="relative flex items-center justify-between w-full group">
+                          {/* ĐỘI NHÀ (TRÁI) */}
+                          <div className={`w-[42%] flex flex-col ${event.side === 'left' ? 'items-end text-right' : 'items-start text-left opacity-0'}`}>
+                            {event.side === 'left' && (
+                              <>
+                                <div className="flex items-center gap-2 justify-end">
+                                  {event.type === 'goal' && <span className="text-sm drop-shadow-md">⚽</span>}
+                                  <span className={`font-bold ${event.isRecent ? 'text-[#4ade80] text-[14px]' : 'text-white text-[13px]'}`}>{event.player || event.playerIn}</span>
+                                </div>
+                                {event.playerOut && <span className="text-[11px] text-[#71717a] font-medium mt-1">Ra: {event.playerOut}</span>}
+                                {event.detail && event.type !== 'danger' && <span className="text-[11px] text-[#4ade80] font-medium mt-1">{event.detail}</span>}
+                              </>
+                            )}
+                          </div>
+                          
+                          {/* TRUNG TÂM (THỜI GIAN/ICON) */}
+                          <div className="w-8 h-8 absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
+                            {event.side === 'center' ? (
+                              <div className={`border text-[10px] font-bold px-3 py-1.5 rounded-full z-10 whitespace-nowrap ${event.type === 'info' ? 'bg-[#1e3a2e] border-[#2a5a44] text-[#4ade80]' : 'bg-[#27272a] border-[#3f3f46] text-[#a1a1aa]'}`}>{event.label}</div>
+                            ) : (
+                              <div className={`w-7 h-7 rounded-full border-[3px] border-[#202024] z-10 flex items-center justify-center text-[10px] font-black ${event.type === 'goal' ? `bg-[#4ade80] text-[#18181b] ${event.isRecent ? 'animate-pulse' : ''}` : event.type === 'yellow_card' ? 'bg-yellow-400 text-yellow-900' : event.type === 'red_card' ? 'bg-red-500 text-white' : 'bg-[#27272a] text-[#a1a1aa]'}`}>
+                                {event.time.replace("'", "")}
                               </div>
-                              {event.playerOut && <span className="text-[11px] text-[#71717a] font-medium mt-1">Ra: {event.playerOut}</span>}
-                              {event.detail && event.type !== 'danger' && <span className="text-[11px] text-[#4ade80] font-medium mt-1">{event.detail}</span>}
-                            </>
-                          )}
-                        </div>
-                        
-                        <div className="w-8 h-8 absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
-                          {event.side === 'center' ? (
-                            <div className={`border text-[10px] font-bold px-3 py-1.5 rounded-full z-10 whitespace-nowrap ${event.type === 'info' ? 'bg-[#1e3a2e] border-[#2a5a44] text-[#4ade80]' : 'bg-[#27272a] border-[#3f3f46] text-[#a1a1aa]'}`}>{event.label}</div>
-                          ) : (
-                            <div className={`w-7 h-7 rounded-full border-[3px] border-[#202024] z-10 flex items-center justify-center text-[10px] font-black ${event.type.includes('goal') ? `bg-[#4ade80] text-[#18181b] ${event.isRecent ? 'animate-pulse' : ''}` : event.type === 'yellow_card' ? 'bg-yellow-400 text-yellow-900' : 'bg-[#27272a] text-[#a1a1aa]'}`}>
-                              {event.time.replace("'", "")}
-                            </div>
-                          )}
-                        </div>
+                            )}
+                          </div>
 
-                        <div className={`w-[42%] flex flex-col ${event.side === 'right' ? 'items-start text-left' : 'items-end text-right opacity-0'}`}>
-                          {event.side === 'right' && (
-                            <>
-                              <div className="flex items-center gap-2 justify-start">
-                                <span className={`font-bold ${event.isRecent ? 'text-[#4ade80] text-[14px]' : 'text-white text-[13px]'}`}>{event.player || event.playerIn}</span>
-                                {event.type.includes('goal') && <span className="text-sm drop-shadow-md">⚽</span>}
-                              </div>
-                              {event.playerOut && <span className="text-[11px] text-[#71717a] font-medium mt-1">Ra: {event.playerOut}</span>}
-                              {event.detail && event.type !== 'danger' && <span className="text-[11px] text-[#4ade80] font-medium mt-1">{event.detail}</span>}
-                            </>
-                          )}
+                          {/* ĐỘI KHÁCH (PHẢI) */}
+                          <div className={`w-[42%] flex flex-col ${event.side === 'right' ? 'items-start text-left' : 'items-end text-right opacity-0'}`}>
+                            {event.side === 'right' && (
+                              <>
+                                <div className="flex items-center gap-2 justify-start">
+                                  <span className={`font-bold ${event.isRecent ? 'text-[#4ade80] text-[14px]' : 'text-white text-[13px]'}`}>{event.player || event.playerIn}</span>
+                                  {event.type === 'goal' && <span className="text-sm drop-shadow-md">⚽</span>}
+                                </div>
+                                {event.playerOut && <span className="text-[11px] text-[#71717a] font-medium mt-1">Ra: {event.playerOut}</span>}
+                                {event.detail && event.type !== 'danger' && <span className="text-[11px] text-[#4ade80] font-medium mt-1">{event.detail}</span>}
+                              </>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </>
               )}
             </div>
           )}
 
-          {/* TAB 2: ĐỘI HÌNH */}
+          {/* --------------------- TAB 2: ĐỘI HÌNH (LINEUPS) --------------------- */}
           {selectedMatchTab === 'Đội hình' && (
             <div className="flex flex-col gap-5">
               <div className="flex justify-between items-center px-1">
-                <div className="flex items-center gap-3"><div className="w-4 h-4 rounded-full bg-[#18181b] border-[1.5px] border-[#3f3f46]"></div><div className="flex flex-col"><span className="text-[13px] font-bold text-white">{selectedMatch.teamA}</span><span className="text-[10px] text-[#4ade80] font-semibold">4-3-3</span></div></div>
-                <div className="flex items-center gap-3 flex-row-reverse"><div className="w-4 h-4 rounded-full bg-white border-[1.5px] border-[#a1a1aa]"></div><div className="flex flex-col items-end"><span className="text-[13px] font-bold text-white">{selectedMatch.teamB}</span><span className="text-[10px] text-[#4ade80] font-semibold">4-3-3</span></div></div>
+                <div className="flex items-center gap-3"><div className="w-4 h-4 rounded-full bg-[#18181b] border-[1.5px] border-[#3f3f46]"></div><div className="flex flex-col"><span className="text-[13px] font-bold text-white truncate max-w-[100px]">{selectedMatch.teamA}</span><span className="text-[10px] text-[#4ade80] font-semibold">{formA}</span></div></div>
+                <div className="flex items-center gap-3 flex-row-reverse"><div className="w-4 h-4 rounded-full bg-white border-[1.5px] border-[#a1a1aa]"></div><div className="flex flex-col items-end"><span className="text-[13px] font-bold text-white truncate max-w-[100px]">{selectedMatch.teamB}</span><span className="text-[10px] text-[#4ade80] font-semibold">{formB}</span></div></div>
               </div>
               
-              <div className="relative w-full aspect-[2/3] bg-[#064e3b] rounded-[24px] overflow-hidden shadow-inner border-[4px] border-[#18181b]">
+              <div className="relative w-full aspect-[2/3.5] bg-[#064e3b] rounded-[24px] overflow-hidden shadow-inner border-[4px] border-[#18181b]">
+                {/* Đồ họa Sân cỏ */}
                 <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_10%,rgba(0,0,0,0.1)_10%,rgba(0,0,0,0.1)_20%)] pointer-events-none"></div>
                 <div className="absolute top-1/2 left-0 w-full h-[1.5px] bg-white/40"></div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 border-[1.5px] border-white/40 rounded-full"></div>
-                
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[55%] h-[16%] border-[1.5px] border-white/40 border-t-0"></div>
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[25%] h-[6%] border-[1.5px] border-white/40 border-t-0"></div>
-                
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[55%] h-[16%] border-[1.5px] border-white/40 border-b-0"></div>
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[25%] h-[6%] border-[1.5px] border-white/40 border-b-0"></div>
               
-                {teamBLineup.map((player) => (
+                {/* Render Đội Khách (Phía trên) */}
+                {currentLineupB.map((player) => (
                   <div key={player.id} className="absolute flex flex-col items-center justify-center -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-110 transition-transform cursor-pointer" style={{ top: player.top, left: player.left }}>
-                    <span className="text-[9px] font-bold text-[#18181b] mb-1 shadow-sm bg-white/95 backdrop-blur-sm px-2 py-0.5 rounded leading-none whitespace-nowrap">{player.name}</span>
+                    <span className="text-[8px] font-bold text-[#18181b] mb-1 shadow-sm bg-white/95 backdrop-blur-sm px-1.5 py-0.5 rounded leading-none truncate max-w-[50px] text-center">{player.name}</span>
                     <div className="relative flex items-center justify-center">
-                      {!isUpcoming && (
-                         <span className={`absolute right-full mr-2 text-[8px] font-black px-1.5 py-0.5 rounded-sm shadow-md border border-black/10 ${parseFloat(player.rating) >= 7.0 ? 'bg-[#4ade80] text-[#18181b]' : parseFloat(player.rating) >= 6.0 ? 'bg-amber-400 text-[#18181b]' : 'bg-red-500 text-white'}`}>
-                            {player.rating}
-                         </span>
-                      )}
-                      <div className="w-[30px] h-[30px] shrink-0 rounded-full flex items-center justify-center text-[11px] font-black leading-none shadow-md bg-white border border-[#a1a1aa] text-[#18181b]">
+                      <div className="w-[26px] h-[26px] shrink-0 rounded-full flex items-center justify-center text-[10px] font-black leading-none shadow-md bg-white border border-[#a1a1aa] text-[#18181b]">
                          {player.number}
                       </div>
                     </div>
                   </div>
                 ))}
 
-                {teamALineup.map((player) => (
+                {/* Render Đội Nhà (Phía dưới) */}
+                {currentLineupA.map((player) => (
                   <div key={player.id} className="absolute flex flex-col items-center justify-center -translate-x-1/2 -translate-y-1/2 z-10 hover:scale-110 transition-transform cursor-pointer" style={{ top: player.top, left: player.left }}>
                     <div className="relative flex items-center justify-center">
-                      {!isUpcoming && (
-                         <span className={`absolute right-full mr-2 text-[8px] font-black px-1.5 py-0.5 rounded-sm shadow-md border border-white/10 ${parseFloat(player.rating) >= 7.0 ? 'bg-[#4ade80] text-[#18181b]' : parseFloat(player.rating) >= 6.0 ? 'bg-amber-400 text-[#18181b]' : 'bg-red-500 text-white'}`}>
-                            {player.rating}
-                         </span>
-                      )}
-                      <div className="w-[30px] h-[30px] shrink-0 rounded-full flex items-center justify-center text-[11px] font-black leading-none shadow-md bg-[#18181b] border border-[#3f3f46] text-white">
+                      <div className="w-[26px] h-[26px] shrink-0 rounded-full flex items-center justify-center text-[10px] font-black leading-none shadow-md bg-[#18181b] border border-[#3f3f46] text-white">
                          {player.number}
                       </div>
                     </div>
-                    <span className="text-[9px] font-bold text-white mt-1 shadow-sm bg-[#18181b]/95 backdrop-blur-sm px-2 py-0.5 rounded border border-[#3f3f46] leading-none whitespace-nowrap">{player.name}</span>
+                    <span className="text-[8px] font-bold text-white mt-1 shadow-sm bg-[#18181b]/95 backdrop-blur-sm px-1.5 py-0.5 rounded border border-[#3f3f46] leading-none truncate max-w-[50px] text-center">{player.name}</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* TAB 3: THỐNG KÊ */}
+          {/* --------------------- TAB 3: THỐNG KÊ (STATISTICS) --------------------- */}
           {selectedMatchTab === 'Thống kê' && (
             <div className="flex flex-col gap-6 pt-3">
-               {isUpcoming ? (
-                 <div className="text-center py-10 text-[#71717a] text-sm font-medium">Chưa có thống kê</div>
+               {isUpcoming && !matchDetailsData?.statistics ? (
+                 <div className="text-center py-10 text-[#71717a] text-sm font-medium">Trận đấu chưa bắt đầu, chưa có số liệu.</div>
+               ) : currentStatsData.length === 0 ? (
+                 <div className="text-center py-10 text-[#71717a] text-sm font-medium">Không có dữ liệu thống kê từ API.</div>
                ) : (
-                 statsData.map((stat, idx) => {
+                 currentStatsData.map((stat, idx) => {
                    const total = stat.a + stat.b;
                    const pctA = total === 0 ? 50 : (stat.a / total) * 100;
                    const pctB = total === 0 ? 50 : (stat.b / total) * 100;
