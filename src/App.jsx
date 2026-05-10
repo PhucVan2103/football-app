@@ -71,7 +71,7 @@ const getColor = (team) => TEAM_COLORS[team] || '#3f3f46';
 // ==========================================
 // KHI MANG VỀ LOCAL (MÁY TÍNH CỦA BẠN), HÃY THAY DÒNG NÀY THÀNH:
 const API_KEY = import.meta.env.VITE_API_KEY || "";
-// const API_KEY = ""; 
+//const API_KEY = ""; 
 
 const API_LEAGUE_IDS = {
   'Premier League': 39,
@@ -83,20 +83,18 @@ const API_LEAGUE_IDS = {
 };
 
 const getCurrentSeason = () => {
-  const currentMonth = new Date().getMonth();
-  const currentYear = new Date().getFullYear();
-  // Nếu tài khoản Free của API-Sports không hỗ trợ mùa giải mới, nó sẽ tự động báo lỗi và chuyển sang Mock Data.
-  return currentMonth < 7 ? currentYear - 1 : currentYear; 
+  // Cố định mùa giải 2024 để tài khoản Free không bị API-Sports chặn
+  return 2024;
 };
 
-// Khôi phục lấy thời gian thực của hệ thống (Ngày hôm nay)
+// Tạo mảng Ngày tháng động (Lùi về giữa tháng 5/2025 để hiển thị các trận đấu mùa 2024)
 const generateDates = () => {
   const dates = [];
-  const today = new Date(); 
+  const baseDate = new Date(2025, 4, 15); // Tháng 4 trong Javascript tương ứng với Tháng 5 thực tế
   const dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
   for (let i = -2; i <= 4; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
+    const d = new Date(baseDate);
+    d.setDate(baseDate.getDate() + i);
     dates.push({
       day: dayNames[d.getDay()],
       date: d.getDate().toString().padStart(2, '0'),
