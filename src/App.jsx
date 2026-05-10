@@ -66,10 +66,13 @@ const TEAM_COLORS = {
 };
 const getColor = (team) => TEAM_COLORS[team] || '#3f3f46';
 
-// === CẤU HÌNH API ===
-// Tạm thời để trống trên môi trường xem trước. Khi chạy dưới máy tính (VS Code), bạn hãy đổi thành:
+// ==========================================
+// CẤU HÌNH API - (CHÚ Ý DÒNG NÀY KHI CHẠY DƯỚI MÁY)
+// ==========================================
+// KHI CHẠY TRÊN VS CODE CỦA BẠN, HÃY XÓA DÒNG "const API_KEY = ... " Ở DƯỚI VÀ MỞ COMMENT DÒNG NÀY RA:
 const API_KEY = import.meta.env.VITE_API_KEY || "";
 //const API_KEY = ""; 
+
 
 const API_LEAGUE_IDS = {
   'Premier League': 39,
@@ -80,15 +83,12 @@ const API_LEAGUE_IDS = {
   'Champions League': 2
 };
 
-// Hàm tính toán mùa giải hiện tại dựa vào tháng thực tế (API-Sports dùng năm bắt đầu mùa giải)
-// Các giải châu Âu thường bắt đầu vào tháng 8 (tháng thứ 7 trong JS do index từ 0)
 const getCurrentSeason = () => {
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   return currentMonth < 7 ? currentYear - 1 : currentYear;
 };
 
-// Tạo mảng Ngày tháng động (Dynamic Dates) dựa trên ngày hiện tại của máy tính
 const generateDates = () => {
   const dates = [];
   const today = new Date();
@@ -99,7 +99,6 @@ const generateDates = () => {
     dates.push({
       day: dayNames[d.getDay()],
       date: d.getDate().toString().padStart(2, '0'),
-      // fullDate dùng để gửi lên API (Định dạng: YYYY-MM-DD)
       fullDate: `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`
     });
   }
@@ -202,7 +201,7 @@ const MatchCard = ({ item, onClick }) => {
 const App = () => {
   const [activeTab, setActiveTab] = useState('schedule'); 
   const [selectedMatchTab, setSelectedMatchTab] = useState('Chi tiết'); 
-  const [selectedDateIndex, setSelectedDateIndex] = useState(2); // Mặc định là Hôm nay (index 2)
+  const [selectedDateIndex, setSelectedDateIndex] = useState(2);
   const [selectedLeagueFilter, setSelectedLeagueFilter] = useState('Tất cả');
   const [selectedStandingsLeague, setSelectedStandingsLeague] = useState('Champions League');
   const [selectedTeam, setSelectedTeam] = useState(null);
@@ -210,22 +209,26 @@ const App = () => {
 
   // === STATE CHO API ===
   const [isApiLoading, setIsApiLoading] = useState(false);
+  const [isStandingsLoading, setIsStandingsLoading] = useState(false); // Thêm loading riêng cho Bảng xếp hạng
   const [apiMatches, setApiMatches] = useState(mockScheduleData);
   const [apiStandings, setApiStandings] = useState(topLeaguesStandings);
   const [apiStatus, setApiStatus] = useState(API_KEY ? 'Đang kết nối...' : 'Mock Data');
 
-  // LOGIC GỌI API CHO LỊCH THI ĐẤU (Tự động cập nhật mùa giải)
+  // LOGIC GỌI API CHO LỊCH THI ĐẤU
   useEffect(() => {
     const fetchMatches = async () => {
       if (!API_KEY) {
+        console.log("[Matches] Không tìm thấy API_KEY. Đang sử dụng Mock Data.");
         setApiMatches(mockScheduleData);
+        setApiStatus('Mock Data');
         return;
       }
 
       setIsApiLoading(true);
       try {
         const targetDate = dynamicDatesData[selectedDateIndex].fullDate;
-        const activeSeason = getCurrentSeason(); // Gọi hàm tự động lấy mùa giải hiện hành
+        const activeSeason = getCurrentSeason();
+        console.log(`[Matches] Đang lấy Lịch thi đấu Premier League (mùa ${activeSeason}) cho ngày ${targetDate}...`);
         
         const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=39&season=${activeSeason}&date=${targetDate}`, {
           method: 'GET',
@@ -234,12 +237,13 @@ const App = () => {
         const data = await response.json();
 
         if (data.errors && Object.keys(data.errors).length > 0) {
+          console.error("[Matches] Lỗi từ API-Sports:", data.errors);
           setApiStatus('Lỗi API Key');
-          setIsApiLoading(false);
           return;
         }
 
         if (data.response) {
+          console.log(`[Matches] API trả về ${data.response.length} trận đấu!`);
           const fetchedMatches = data.response.map(item => {
             const isLive = ['1H', '2H', 'HT', 'ET', 'P'].includes(item.fixture.status.short);
             const statusMap = {
@@ -266,7 +270,7 @@ const App = () => {
           setApiStatus('LIVE API');
         }
       } catch (error) {
-        console.error("Lỗi API Trận đấu:", error);
+        console.error("[Matches] Lỗi Network khi gọi API:", error);
         setApiStatus('Lỗi kết nối');
       } finally {
         setIsApiLoading(false);
@@ -276,14 +280,20 @@ const App = () => {
     fetchMatches();
   }, [selectedDateIndex]);
 
-  // LOGIC GỌI API CHO BẢNG XẾP HẠNG (Tự động cập nhật mùa giải)
+  // LOGIC GỌI API CHO BẢNG XẾP HẠNG
   useEffect(() => {
     const fetchRealStandings = async () => {
-      if (!API_KEY) return; 
+      if (!API_KEY) {
+        console.log("[Standings] Không tìm thấy API_KEY. Đang sử dụng Mock Data.");
+        return; 
+      }
       
+      setIsStandingsLoading(true);
       try {
         const leagueId = API_LEAGUE_IDS[selectedStandingsLeague];
-        const activeSeason = getCurrentSeason(); // Tự động lấy mùa giải
+        const activeSeason = getCurrentSeason(); 
+        
+        console.log(`[Standings] Đang lấy Bảng xếp hạng ID: ${leagueId} mùa giải ${activeSeason}...`);
 
         const response = await fetch(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${activeSeason}`, {
           method: 'GET',
@@ -291,7 +301,14 @@ const App = () => {
         });
         const data = await response.json();
 
+        if (data.errors && Object.keys(data.errors).length > 0) {
+          console.error("[Standings] Lỗi từ API-Sports:", data.errors);
+          setApiStatus('Lỗi API Key');
+          return;
+        }
+
         if (data.response && data.response.length > 0) {
+          console.log("[Standings] Đã kéo thành công dữ liệu bảng xếp hạng thật!");
           const allStandings = data.response[0].league.standings.flat();
           const fetchedStandings = allStandings.map(team => ({
             pos: team.rank,
@@ -310,10 +327,15 @@ const App = () => {
             ...prev,
             [selectedStandingsLeague]: fetchedStandings
           }));
+          setApiStatus('LIVE API');
+        } else {
+          console.warn("[Standings] Cảnh báo: Mảng trả về rỗng. Giải đấu này chưa cập nhật mùa mới?");
         }
       } catch (error) {
-        console.error("Lỗi khi tải dữ liệu API Bảng xếp hạng:", error);
-      } 
+        console.error("[Standings] Lỗi Network:", error);
+      } finally {
+        setIsStandingsLoading(false);
+      }
     };
 
     fetchRealStandings();
@@ -338,13 +360,14 @@ const App = () => {
           ) : (
             <h1 className="text-[28px] font-extrabold tracking-tight text-white">{title}</h1>
           )}
-          {/* Status hiển thị trạng thái API */}
-          {showLeagueToggle && (
-            <div className="flex items-center gap-1.5 mt-0.5 ml-2">
-               <div className={`w-1.5 h-1.5 rounded-full ${API_KEY ? 'bg-[#4ade80] animate-pulse' : 'bg-amber-500'}`}></div>
-               <span className="text-[9px] font-bold text-[#a1a1aa] uppercase tracking-widest">{apiStatus}</span>
-            </div>
-          )}
+          
+          {/* LUÔN HIỂN THỊ TRẠNG THÁI API ĐỂ DỄ DÀNG KIỂM TRA (DEBUG) */}
+          <div className="flex items-center gap-1.5 mt-0.5 ml-2">
+             <div className={`w-1.5 h-1.5 rounded-full ${API_KEY && apiStatus === 'LIVE API' ? 'bg-[#4ade80] animate-pulse' : 'bg-amber-500'}`}></div>
+             <span className="text-[9px] font-bold text-[#a1a1aa] uppercase tracking-widest">
+               {API_KEY ? apiStatus : 'MOCK DATA'}
+             </span>
+          </div>
         </div>
         <div className="flex gap-3 items-start">
           <button className="w-10 h-10 flex items-center justify-center bg-[#27272a] rounded-full active:scale-95"><Search size={18} className="text-[#a1a1aa]" /></button>
@@ -362,7 +385,6 @@ const App = () => {
       <Header showLeagueToggle />
       <div className="w-full border-b border-[#27272a] mb-4">
         <div className="flex px-2 justify-between">
-          {/* Thanh cuộn hiển thị ngày động (Dynamic Dates) */}
           {dynamicDatesData.map((item, i) => (
             <div key={i} onClick={() => setSelectedDateIndex(i)} className={`flex-1 min-w-[45px] flex flex-col items-center pb-2.5 pt-1.5 cursor-pointer relative transition-colors ${i === selectedDateIndex ? 'text-[#4ade80]' : 'text-[#a1a1aa] hover:text-zinc-300'}`}>
               <span className="text-[9px] font-semibold uppercase mb-0.5">{item.day}</span>
@@ -383,7 +405,6 @@ const App = () => {
               <div className="w-8 h-8 border-[3px] border-[#4ade80] border-t-transparent rounded-full animate-spin"></div>
             </div>
           ) : apiMatches.length === 0 ? (
-            /* Hiển thị màn hình trống nếu ngày đó không có trận Premier League nào */
             <div className="flex flex-col items-center justify-center py-12 text-[#71717a]">
               <CalendarIcon size={36} className="mb-3 opacity-30" />
               <p className="text-sm font-medium text-white">Không có trận đấu</p>
@@ -466,7 +487,7 @@ const App = () => {
             </button>
           ))}
         </div>
-        <div className="px-5">
+        <div className="px-5 relative">
           <div className="bg-[#222226] border-[1.5px] border-[#4c3a6f] rounded-[24px] overflow-hidden shadow-lg">
             <div className="flex items-center px-5 py-4 text-[10px] font-bold text-[#71717a] uppercase tracking-widest border-b border-white/5">
               <span className="w-8">#</span>
@@ -478,7 +499,15 @@ const App = () => {
                 <span className="w-6 text-right text-white">Đ</span>
               </div>
             </div>
-            <div className="flex flex-col relative pb-2 pt-1">
+            <div className="flex flex-col relative pb-2 pt-1 min-h-[250px]">
+              
+              {/* Hiệu ứng loading quay khi đang gọi API */}
+              {isStandingsLoading && (
+                <div className="absolute inset-0 bg-[#222226]/80 backdrop-blur-sm z-10 flex items-center justify-center">
+                  <div className="w-8 h-8 border-[3px] border-[#4ade80] border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
+              
               {currentStandings.map((team, idx) => {
                 let rankColor = 'text-[#71717a] font-medium';
                 if (team.pos <= 4) rankColor = 'text-[#4ade80] font-bold';
