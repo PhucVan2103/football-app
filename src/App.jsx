@@ -67,10 +67,26 @@ const TEAM_COLORS = {
 const getColor = (team) => TEAM_COLORS[team] || '#3f3f46';
 
 // === CẤU HÌNH API ===
-// Điền API Key của bạn vào chuỗi dưới đây khi chạy trên máy tính cá nhân
+// Tạm thời để trống trên môi trường xem trước. Khi chạy dưới máy tính (VS Code), bạn hãy đổi thành:
+const API_KEY = import.meta.env.VITE_API_KEY || "";
 //const API_KEY = ""; 
 
-const API_KEY = import.meta.env.VITE_API_KEY || "";
+const API_LEAGUE_IDS = {
+  'Premier League': 39,
+  'La Liga': 140,
+  'Serie A': 135,
+  'Bundesliga': 78,
+  'Ligue 1': 61,
+  'Champions League': 2
+};
+
+// Hàm tính toán mùa giải hiện tại dựa vào tháng thực tế (API-Sports dùng năm bắt đầu mùa giải)
+// Các giải châu Âu thường bắt đầu vào tháng 8 (tháng thứ 7 trong JS do index từ 0)
+const getCurrentSeason = () => {
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  return currentMonth < 7 ? currentYear - 1 : currentYear;
+};
 
 // Tạo mảng Ngày tháng động (Dynamic Dates) dựa trên ngày hiện tại của máy tính
 const generateDates = () => {
@@ -98,7 +114,6 @@ const mockScheduleData = [
   { id: 2, time: '22:30', league: 'Premier League', teamA: 'Man City', teamB: 'Liverpool', score: '0 - 0', status: 'Sắp đá', isLive: false },
 ];
 
-// ... (Giữ nguyên các dữ liệu tĩnh khác: teamALineup, teamBLineup, statsData, topLeaguesStandings, mockKeyPlayers, v.v...)
 const teamALineup = [{ id: 'a1', name: 'Ter Stegen', number: '1', top: '90%', left: '50%', rating: '7.5' }, { id: 'a2', name: 'Cancelo', number: '2', top: '78%', left: '15%', rating: '6.8' }, { id: 'a3', name: 'Christensen', number: '15', top: '78%', left: '35%', rating: '7.1' }, { id: 'a4', name: 'Araújo', number: '4', top: '78%', left: '65%', rating: '7.8' }, { id: 'a5', name: 'Koundé', number: '23', top: '78%', left: '85%', rating: '7.0' }, { id: 'a6', name: 'De Jong', number: '21', top: '67%', left: '28%', rating: '8.1' }, { id: 'a7', name: 'Gündoğan', number: '22', top: '67%', left: '50%', rating: '7.4' }, { id: 'a8', name: 'Pedri', number: '8', top: '67%', left: '72%', rating: '7.2' }, { id: 'a9', name: 'Raphinha', number: '11', top: '58%', left: '22%', rating: '8.5' }, { id: 'a10', name: 'Lewandowski', number: '9', top: '58%', left: '50%', rating: '6.5' }, { id: 'a11', name: 'Yamal', number: '27', top: '58%', left: '78%', rating: '9.2' }];
 const teamBLineup = [{ id: 'b1', name: 'Donnarumma', number: '99', top: '10%', left: '50%', rating: '6.0' }, { id: 'b2', name: 'Hakimi', number: '2', top: '22%', left: '15%', rating: '6.5' }, { id: 'b3', name: 'Marquinhos', number: '5', top: '22%', left: '35%', rating: '5.8' }, { id: 'b4', name: 'Škriniar', number: '37', top: '22%', left: '65%', rating: '6.2' }, { id: 'b5', name: 'Hernández', number: '21', top: '22%', left: '85%', rating: '5.5' }, { id: 'b6', name: 'Vitinha', number: '17', top: '33%', left: '28%', rating: '6.9' }, { id: 'b7', name: 'Ugarte', number: '4', top: '33%', left: '50%', rating: '6.1' }, { id: 'b8', name: 'Zaïre-Emery', number: '33', top: '33%', left: '72%', rating: '6.4' }, { id: 'b9', name: 'Dembélé', number: '10', top: '42%', left: '22%', rating: '7.1' }, { id: 'b10', name: 'Mbappé', number: '7', top: '42%', left: '50%', rating: '6.8' }, { id: 'b11', name: 'Barcola', number: '29', top: '42%', left: '78%', rating: '6.0' }];
 const timelineEvents = [{ id: 0, time: "90+5'", type: 'goal', player: 'L. Yamal', assist: 'Raphinha', detail: 'Siêu phẩm sút xa!', side: 'left', isRecent: true }, { id: 1, time: "90'", type: 'info', label: 'Bù giờ 5 phút', side: 'center' }, { id: 2, time: "83'", type: 'sub', playerIn: 'S. Busquets', playerOut: 'P. Alcácer', side: 'left' }, { id: 3, time: "78'", type: 'goal', player: 'S. Busquets', side: 'left' }, { id: 4, time: "71'", type: 'yellow_card', player: 'A. Rabiot', side: 'right' }, { id: 101, time: "60'", type: 'info', label: 'Kiểm soát bóng: 62% - 38%', side: 'center' }, { id: 5, time: "52'", type: 'sub', playerIn: 'A. Gomes', playerOut: 'I. Rakitic', side: 'left' }, { id: 102, time: "50'", type: 'danger', player: 'Raphinha', side: 'left', detail: 'Sút xa dội xà ngang!' }, { id: 6, time: "46'", type: 'half_end', label: 'Hết hiệp 1', side: 'center', extra: '+1\'' }, { id: 7, time: "44'", type: 'goal', player: 'Neymar Jr', side: 'right' }, { id: 103, time: "40'", type: 'danger', player: 'K. Mbappé', side: 'right', detail: 'Bỏ lỡ cơ hội đối mặt' }, { id: 8, time: "31'", type: 'goal_penalty', player: 'K. Mbappé', side: 'right', detail: 'Penalty' }, { id: 11, time: "0'", type: 'match_start', label: 'Bắt đầu', side: 'center' }];
@@ -196,12 +211,12 @@ const App = () => {
   // === STATE CHO API ===
   const [isApiLoading, setIsApiLoading] = useState(false);
   const [apiMatches, setApiMatches] = useState(mockScheduleData);
+  const [apiStandings, setApiStandings] = useState(topLeaguesStandings);
   const [apiStatus, setApiStatus] = useState(API_KEY ? 'Đang kết nối...' : 'Mock Data');
 
-  // LOGIC ƯU TIÊN GỌI API CHO LỊCH THI ĐẤU (FIXTURES)
+  // LOGIC GỌI API CHO LỊCH THI ĐẤU (Tự động cập nhật mùa giải)
   useEffect(() => {
     const fetchMatches = async () => {
-      // 1. Tạm dùng Mock Data nếu chưa điền API_KEY
       if (!API_KEY) {
         setApiMatches(mockScheduleData);
         return;
@@ -209,11 +224,10 @@ const App = () => {
 
       setIsApiLoading(true);
       try {
-        // 2. Lấy chuỗi định dạng YYYY-MM-DD từ UI
         const targetDate = dynamicDatesData[selectedDateIndex].fullDate;
+        const activeSeason = getCurrentSeason(); // Gọi hàm tự động lấy mùa giải hiện hành
         
-        // 3. Gọi API chỉ lọc lấy các trận của PREMIER LEAGUE (ID: 39) vào đúng ngày đã chọn
-        const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=39&season=2024&date=${targetDate}`, {
+        const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=39&season=${activeSeason}&date=${targetDate}`, {
           method: 'GET',
           headers: { 'x-apisports-key': API_KEY }
         });
@@ -226,7 +240,6 @@ const App = () => {
         }
 
         if (data.response) {
-          // 4. Chuyển đổi dữ liệu thô từ API sang dạng UI của chúng ta
           const fetchedMatches = data.response.map(item => {
             const isLive = ['1H', '2H', 'HT', 'ET', 'P'].includes(item.fixture.status.short);
             const statusMap = {
@@ -238,10 +251,10 @@ const App = () => {
             return {
               id: item.fixture.id,
               time: timeStr,
-              league: 'Premier League', // Ưu tiên Premier League
+              league: 'Premier League', 
               teamA: item.teams.home.name,
               teamB: item.teams.away.name,
-              logoA: item.teams.home.logo, // Lấy logo thật cực nét từ API
+              logoA: item.teams.home.logo, 
               logoB: item.teams.away.logo,
               score: `${item.goals.home ?? '-'} - ${item.goals.away ?? '-'}`,
               status: isLive ? 'Live' : (statusMap[item.fixture.status.short] || item.fixture.status.short),
@@ -261,7 +274,50 @@ const App = () => {
     };
 
     fetchMatches();
-  }, [selectedDateIndex]); // Chạy lại hàm này bất cứ khi nào người dùng bấm chọn Ngày khác
+  }, [selectedDateIndex]);
+
+  // LOGIC GỌI API CHO BẢNG XẾP HẠNG (Tự động cập nhật mùa giải)
+  useEffect(() => {
+    const fetchRealStandings = async () => {
+      if (!API_KEY) return; 
+      
+      try {
+        const leagueId = API_LEAGUE_IDS[selectedStandingsLeague];
+        const activeSeason = getCurrentSeason(); // Tự động lấy mùa giải
+
+        const response = await fetch(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${activeSeason}`, {
+          method: 'GET',
+          headers: { 'x-apisports-key': API_KEY }
+        });
+        const data = await response.json();
+
+        if (data.response && data.response.length > 0) {
+          const allStandings = data.response[0].league.standings.flat();
+          const fetchedStandings = allStandings.map(team => ({
+            pos: team.rank,
+            team: team.team.name,
+            logo: team.team.logo, 
+            p: team.all.played,
+            w: team.all.win,
+            d: team.all.draw,
+            l: team.all.lose,
+            pts: team.points
+          }));
+          
+          fetchedStandings.sort((a, b) => a.pos - b.pos);
+          
+          setApiStandings(prev => ({
+            ...prev,
+            [selectedStandingsLeague]: fetchedStandings
+          }));
+        }
+      } catch (error) {
+        console.error("Lỗi khi tải dữ liệu API Bảng xếp hạng:", error);
+      } 
+    };
+
+    fetchRealStandings();
+  }, [selectedStandingsLeague]);
 
   const handleMatchClick = (match) => {
     setSelectedMatch(match);
@@ -331,7 +387,7 @@ const App = () => {
             <div className="flex flex-col items-center justify-center py-12 text-[#71717a]">
               <CalendarIcon size={36} className="mb-3 opacity-30" />
               <p className="text-sm font-medium text-white">Không có trận đấu</p>
-              <p className="text-[11px] mt-1">Ngoại Hạng Anh đang nghỉ vào ngày này</p>
+              <p className="text-[11px] mt-1">Không có lịch thi đấu vào ngày này</p>
             </div>
           ) : (
             apiMatches.slice(0, 5).map(match => <MatchCard key={match.id} item={match} onClick={handleMatchClick} />)
@@ -388,10 +444,10 @@ const App = () => {
     );
   };
 
-  // MÀN HÌNH BẢNG XẾP HẠNG (Tạm ngắt API để tiết kiệm Request cho tab Lịch thi đấu)
+  // MÀN HÌNH BẢNG XẾP HẠNG 
   const StandingsView = () => {  
     const leagues = ['Champions League', 'Premier League', 'La Liga', 'Serie A', 'Bundesliga'];
-    const currentStandings = topLeaguesStandings[selectedStandingsLeague] || [];
+    const currentStandings = apiStandings[selectedStandingsLeague] || [];
     return (
       <div className="flex flex-col h-full bg-[#18181b] text-zinc-100 overflow-y-auto [&::-webkit-scrollbar]:hidden pb-28">
         <Header title="Bảng xếp hạng" />
@@ -466,7 +522,7 @@ const App = () => {
        <div className="flex flex-col h-full bg-[#18181b] text-zinc-100 overflow-y-auto [&::-webkit-scrollbar]:hidden pb-28 pt-14">
           <button onClick={() => setActiveTab('standings')} className="w-10 h-10 ml-5 flex items-center justify-center bg-[#27272a] rounded-full active:scale-95"><ChevronLeft size={18} className="text-zinc-300" /></button>
           <div className="flex flex-col items-center mt-6">
-            <div className="w-24 h-24 mb-4 bg-white/5 p-3 rounded-full"><TeamLogo src={getLogo(selectedTeam.team)} className="w-full h-full object-contain drop-shadow-2xl" /></div>
+            <div className="w-24 h-24 mb-4 bg-white/5 p-3 rounded-full"><TeamLogo src={selectedTeam.logo || getLogo(selectedTeam.team)} className="w-full h-full object-contain drop-shadow-2xl" /></div>
             <h2 className="text-[28px] font-extrabold text-white">{selectedTeam.team}</h2>
             <span className="text-xs text-[#4ade80] font-semibold mt-1">{selectedStandingsLeague}</span>
           </div>
