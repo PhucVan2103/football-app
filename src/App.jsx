@@ -67,12 +67,11 @@ const TEAM_COLORS = {
 const getColor = (team) => TEAM_COLORS[team] || '#3f3f46';
 
 // ==========================================
-// CẤU HÌNH API - (CHÚ Ý DÒNG NÀY KHI CHẠY DƯỚI MÁY)
+// CẤU HÌNH API
 // ==========================================
-// KHI CHẠY TRÊN VS CODE CỦA BẠN, HÃY XÓA DÒNG "const API_KEY = ... " Ở DƯỚI VÀ MỞ COMMENT DÒNG NÀY RA:
+// KHI MANG VỀ LOCAL (MÁY TÍNH CỦA BẠN), HÃY THAY DÒNG NÀY THÀNH:
 const API_KEY = import.meta.env.VITE_API_KEY || "";
-//const API_KEY = ""; 
-
+// const API_KEY = ""; 
 
 const API_LEAGUE_IDS = {
   'Premier League': 39,
@@ -84,19 +83,20 @@ const API_LEAGUE_IDS = {
 };
 
 const getCurrentSeason = () => {
-  // Fix cứng mùa giải 2024 do tài khoản API-Sports Free không hỗ trợ mùa giải mới hơn
-  return 2024;
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  // Nếu tài khoản Free của API-Sports không hỗ trợ mùa giải mới, nó sẽ tự động báo lỗi và chuyển sang Mock Data.
+  return currentMonth < 7 ? currentYear - 1 : currentYear; 
 };
 
+// Khôi phục lấy thời gian thực của hệ thống (Ngày hôm nay)
 const generateDates = () => {
   const dates = [];
-  // Lấy ngày tháng giả lập là 10/05/2025 (cuối mùa 2024/2025) để test API trả về danh sách trận đấu
-  // Nếu lấy thời gian thực (năm 2026) kết hợp với season 2024, API sẽ trả về mảng rỗng []
-  const baseDate = new Date(2025, 4, 10); 
+  const today = new Date(); 
   const dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
   for (let i = -2; i <= 4; i++) {
-    const d = new Date(baseDate);
-    d.setDate(baseDate.getDate() + i);
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
     dates.push({
       day: dayNames[d.getDay()],
       date: d.getDate().toString().padStart(2, '0'),
@@ -107,11 +107,13 @@ const generateDates = () => {
 };
 const dynamicDatesData = generateDates();
 
-// Dữ liệu giả (Mock) khởi tạo cho các trận đấu
+// Dữ liệu giả (Mock) khởi tạo cho các trận đấu (Dùng khi API lỗi hoặc trả về rỗng)
 const mockScheduleData = [
   { id: 0, time: '18:00', league: 'Premier League', teamA: 'Man United', teamB: 'Arsenal', score: '1 - 1', status: 'FT', isLive: false },
   { id: 1, time: '20:00', league: 'Champions League', teamA: 'Barcelona', teamB: 'PSG', score: '2 - 0', status: 'Live', isLive: true },
   { id: 2, time: '22:30', league: 'Premier League', teamA: 'Man City', teamB: 'Liverpool', score: '0 - 0', status: 'Sắp đá', isLive: false },
+  { id: 3, time: '01:45', league: 'La Liga', teamA: 'Real Madrid', teamB: 'Girona', score: '- - -', status: 'Ngày mai', isLive: false },
+  { id: 4, time: '03:00', league: 'Serie A', teamA: 'Juventus', teamB: 'AC Milan', score: '- - -', status: 'Ngày mai', isLive: false }
 ];
 
 const teamALineup = [{ id: 'a1', name: 'Ter Stegen', number: '1', top: '90%', left: '50%', rating: '7.5' }, { id: 'a2', name: 'Cancelo', number: '2', top: '78%', left: '15%', rating: '6.8' }, { id: 'a3', name: 'Christensen', number: '15', top: '78%', left: '35%', rating: '7.1' }, { id: 'a4', name: 'Araújo', number: '4', top: '78%', left: '65%', rating: '7.8' }, { id: 'a5', name: 'Koundé', number: '23', top: '78%', left: '85%', rating: '7.0' }, { id: 'a6', name: 'De Jong', number: '21', top: '67%', left: '28%', rating: '8.1' }, { id: 'a7', name: 'Gündoğan', number: '22', top: '67%', left: '50%', rating: '7.4' }, { id: 'a8', name: 'Pedri', number: '8', top: '67%', left: '72%', rating: '7.2' }, { id: 'a9', name: 'Raphinha', number: '11', top: '58%', left: '22%', rating: '8.5' }, { id: 'a10', name: 'Lewandowski', number: '9', top: '58%', left: '50%', rating: '6.5' }, { id: 'a11', name: 'Yamal', number: '27', top: '58%', left: '78%', rating: '9.2' }];
@@ -210,16 +212,17 @@ const App = () => {
 
   // === STATE CHO API ===
   const [isApiLoading, setIsApiLoading] = useState(false);
-  const [isStandingsLoading, setIsStandingsLoading] = useState(false); // Thêm loading riêng cho Bảng xếp hạng
+  const [isStandingsLoading, setIsStandingsLoading] = useState(false);
   const [apiMatches, setApiMatches] = useState(mockScheduleData);
   const [apiStandings, setApiStandings] = useState(topLeaguesStandings);
   const [apiStatus, setApiStatus] = useState(API_KEY ? 'Đang kết nối...' : 'Mock Data');
 
-  // LOGIC GỌI API CHO LỊCH THI ĐẤU
+  // LOGIC GỌI API CHO LỊCH THI ĐẤU (TRẬN ĐẤU NỔI BẬT) VỚI TÍNH NĂNG SMART FALLBACK
   useEffect(() => {
     const fetchMatches = async () => {
+      // 1. Kiểm tra API Key
       if (!API_KEY) {
-        console.log("[Matches] Không tìm thấy API_KEY. Đang sử dụng Mock Data.");
+        console.log("[Matches] Không tìm thấy API_KEY. Chuyển sang Mock Data.");
         setApiMatches(mockScheduleData);
         setApiStatus('Mock Data');
         return;
@@ -229,7 +232,7 @@ const App = () => {
       try {
         const targetDate = dynamicDatesData[selectedDateIndex].fullDate;
         const activeSeason = getCurrentSeason();
-        console.log(`[Matches] Đang lấy Lịch thi đấu Premier League (mùa ${activeSeason}) cho ngày ${targetDate}...`);
+        console.log(`[Matches] Gọi API Ngoại Hạng Anh (mùa ${activeSeason}) ngày ${targetDate}...`);
         
         const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=39&season=${activeSeason}&date=${targetDate}`, {
           method: 'GET',
@@ -237,42 +240,56 @@ const App = () => {
         });
         const data = await response.json();
 
+        // 2. Xử lý khi API báo lỗi (Ví dụ: hết lượt tải, tài khoản free)
         if (data.errors && Object.keys(data.errors).length > 0) {
-          console.error("[Matches] Lỗi từ API-Sports:", data.errors);
-          setApiStatus('Lỗi API Key');
+          console.warn("[Matches] Lỗi từ API-Sports (Có thể do tài khoản Free). Chuyển về Mock Data.", data.errors);
+          setApiMatches(mockScheduleData);
+          setApiStatus('Mock Data (Lỗi API)');
+          setIsApiLoading(false);
           return;
         }
 
+        // 3. Xử lý khi API gọi thành công
         if (data.response) {
-          console.log(`[Matches] API trả về ${data.response.length} trận đấu!`);
-          const fetchedMatches = data.response.map(item => {
-            const isLive = ['1H', '2H', 'HT', 'ET', 'P'].includes(item.fixture.status.short);
-            const statusMap = {
-              'NS': 'Sắp đá', 'FT': 'FT', 'HT': 'Nghỉ', '1H': 'Hiệp 1', '2H': 'Hiệp 2', 'CANC': 'Hủy', 'PST': 'Hoãn'
-            };
-            const dateObj = new Date(item.fixture.date);
-            const timeStr = dateObj.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+          // TH1: Ngày đó không có trận đấu nào HOẶC gói Free không cho phép lấy mùa giải năm nay => Mảng rỗng []
+          if (data.response.length === 0) {
+            console.log("[Matches] API trả về 0 trận đấu. Tự động hiển thị Mock Data để giao diện không bị trống.");
+            setApiMatches(mockScheduleData);
+            setApiStatus('Mock Data (Trống)');
+          } 
+          // TH2: Lấy được dữ liệu thật
+          else {
+            console.log(`[Matches] API trả về ${data.response.length} trận đấu!`);
+            const fetchedMatches = data.response.map(item => {
+              const isLive = ['1H', '2H', 'HT', 'ET', 'P'].includes(item.fixture.status.short);
+              const statusMap = {
+                'NS': 'Sắp đá', 'FT': 'FT', 'HT': 'Nghỉ', '1H': 'Hiệp 1', '2H': 'Hiệp 2', 'CANC': 'Hủy', 'PST': 'Hoãn'
+              };
+              const dateObj = new Date(item.fixture.date);
+              const timeStr = dateObj.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
 
-            return {
-              id: item.fixture.id,
-              time: timeStr,
-              league: 'Premier League', 
-              teamA: item.teams.home.name,
-              teamB: item.teams.away.name,
-              logoA: item.teams.home.logo, 
-              logoB: item.teams.away.logo,
-              score: `${item.goals.home ?? '-'} - ${item.goals.away ?? '-'}`,
-              status: isLive ? 'Live' : (statusMap[item.fixture.status.short] || item.fixture.status.short),
-              isLive: isLive
-            };
-          });
-          
-          setApiMatches(fetchedMatches);
-          setApiStatus('LIVE API');
+              return {
+                id: item.fixture.id,
+                time: timeStr,
+                league: 'Premier League', 
+                teamA: item.teams.home.name,
+                teamB: item.teams.away.name,
+                logoA: item.teams.home.logo, 
+                logoB: item.teams.away.logo,
+                score: `${item.goals.home ?? '-'} - ${item.goals.away ?? '-'}`,
+                status: isLive ? 'Live' : (statusMap[item.fixture.status.short] || item.fixture.status.short),
+                isLive: isLive
+              };
+            });
+            
+            setApiMatches(fetchedMatches);
+            setApiStatus('LIVE API');
+          }
         }
       } catch (error) {
-        console.error("[Matches] Lỗi Network khi gọi API:", error);
-        setApiStatus('Lỗi kết nối');
+        console.error("[Matches] Lỗi Network:", error);
+        setApiMatches(mockScheduleData);
+        setApiStatus('Mock Data (Lỗi Mạng)');
       } finally {
         setIsApiLoading(false);
       }
@@ -281,11 +298,10 @@ const App = () => {
     fetchMatches();
   }, [selectedDateIndex]);
 
-  // LOGIC GỌI API CHO BẢNG XẾP HẠNG
+  // LOGIC GỌI API CHO BẢNG XẾP HẠNG VỚI TÍNH NĂNG SMART FALLBACK
   useEffect(() => {
     const fetchRealStandings = async () => {
       if (!API_KEY) {
-        console.log("[Standings] Không tìm thấy API_KEY. Đang sử dụng Mock Data.");
         return; 
       }
       
@@ -294,8 +310,6 @@ const App = () => {
         const leagueId = API_LEAGUE_IDS[selectedStandingsLeague];
         const activeSeason = getCurrentSeason(); 
         
-        console.log(`[Standings] Đang lấy Bảng xếp hạng ID: ${leagueId} mùa giải ${activeSeason}...`);
-
         const response = await fetch(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${activeSeason}`, {
           method: 'GET',
           headers: { 'x-apisports-key': API_KEY }
@@ -303,13 +317,11 @@ const App = () => {
         const data = await response.json();
 
         if (data.errors && Object.keys(data.errors).length > 0) {
-          console.error("[Standings] Lỗi từ API-Sports:", data.errors);
-          setApiStatus('Lỗi API Key');
+          console.warn("[Standings] Lỗi từ API-Sports. Giữ nguyên Mock Data.", data.errors);
           return;
         }
 
         if (data.response && data.response.length > 0) {
-          console.log("[Standings] Đã kéo thành công dữ liệu bảng xếp hạng thật!");
           const allStandings = data.response[0].league.standings.flat();
           const fetchedStandings = allStandings.map(team => ({
             pos: team.rank,
@@ -328,9 +340,8 @@ const App = () => {
             ...prev,
             [selectedStandingsLeague]: fetchedStandings
           }));
-          setApiStatus('LIVE API');
         } else {
-          console.warn("[Standings] Cảnh báo: Mảng trả về rỗng. Giải đấu này chưa cập nhật mùa mới?");
+          console.warn("[Standings] API trả về mảng rỗng (Có thể do giới hạn Free Plan). Giữ Mock Data.");
         }
       } catch (error) {
         console.error("[Standings] Lỗi Network:", error);
@@ -362,11 +373,11 @@ const App = () => {
             <h1 className="text-[28px] font-extrabold tracking-tight text-white">{title}</h1>
           )}
           
-          {/* LUÔN HIỂN THỊ TRẠNG THÁI API ĐỂ DỄ DÀNG KIỂM TRA (DEBUG) */}
+          {/* LUÔN HIỂN THỊ TRẠNG THÁI API */}
           <div className="flex items-center gap-1.5 mt-0.5 ml-2">
-             <div className={`w-1.5 h-1.5 rounded-full ${API_KEY && apiStatus === 'LIVE API' ? 'bg-[#4ade80] animate-pulse' : 'bg-amber-500'}`}></div>
-             <span className="text-[9px] font-bold text-[#a1a1aa] uppercase tracking-widest">
-               {API_KEY ? apiStatus : 'MOCK DATA'}
+             <div className={`w-1.5 h-1.5 rounded-full ${apiStatus === 'LIVE API' ? 'bg-[#4ade80] animate-pulse' : 'bg-amber-500'}`}></div>
+             <span className="text-[9px] font-bold text-[#a1a1aa] uppercase tracking-widest truncate max-w-[120px]">
+               {apiStatus}
              </span>
           </div>
         </div>
@@ -405,12 +416,6 @@ const App = () => {
             <div className="absolute inset-0 bg-[#18181b]/80 backdrop-blur-sm z-10 flex items-center justify-center rounded-xl">
               <div className="w-8 h-8 border-[3px] border-[#4ade80] border-t-transparent rounded-full animate-spin"></div>
             </div>
-          ) : apiMatches.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-[#71717a]">
-              <CalendarIcon size={36} className="mb-3 opacity-30" />
-              <p className="text-sm font-medium text-white">Không có trận đấu</p>
-              <p className="text-[11px] mt-1">Không có lịch thi đấu vào ngày này</p>
-            </div>
           ) : (
             apiMatches.slice(0, 5).map(match => <MatchCard key={match.id} item={match} onClick={handleMatchClick} />)
           )}
@@ -442,8 +447,6 @@ const App = () => {
            <div className="grid grid-cols-2 gap-3 relative min-h-[300px]">
              {isApiLoading ? (
                <div className="absolute inset-0 flex items-center justify-center"><div className="w-8 h-8 border-[3px] border-[#4ade80] border-t-transparent rounded-full animate-spin"></div></div>
-             ) : filteredData.length === 0 ? (
-               <div className="absolute inset-0 flex items-center justify-center text-[#71717a] text-sm">Không có dữ liệu</div>
              ) : filteredData.map((item) => {
                const colorA = getColor(item.teamA);
                const colorB = getColor(item.teamB);
