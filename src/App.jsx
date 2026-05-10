@@ -84,18 +84,19 @@ const API_LEAGUE_IDS = {
 };
 
 const getCurrentSeason = () => {
-  const currentMonth = new Date().getMonth();
-  const currentYear = new Date().getFullYear();
-  return currentMonth < 7 ? currentYear - 1 : currentYear;
+  // Fix cứng mùa giải 2024 do tài khoản API-Sports Free không hỗ trợ mùa giải mới hơn
+  return 2024;
 };
 
 const generateDates = () => {
   const dates = [];
-  const today = new Date();
+  // Lấy ngày tháng giả lập là 10/05/2025 (cuối mùa 2024/2025) để test API trả về danh sách trận đấu
+  // Nếu lấy thời gian thực (năm 2026) kết hợp với season 2024, API sẽ trả về mảng rỗng []
+  const baseDate = new Date(2025, 4, 10); 
   const dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
   for (let i = -2; i <= 4; i++) {
-    const d = new Date();
-    d.setDate(today.getDate() + i);
+    const d = new Date(baseDate);
+    d.setDate(baseDate.getDate() + i);
     dates.push({
       day: dayNames[d.getDay()],
       date: d.getDate().toString().padStart(2, '0'),
@@ -421,13 +422,15 @@ const App = () => {
   const AllMatchesView = () => {
     const leagues = ['Tất cả', ...new Set(apiMatches.map(m => m.league))];
     const filteredData = selectedLeagueFilter === 'Tất cả' ? apiMatches : apiMatches.filter(m => m.league === selectedLeagueFilter);
+    const targetMonth = dynamicDatesData[selectedDateIndex]?.fullDate.split('-')[1];
+
     return (
       <div className="flex flex-col h-full bg-[#18181b] text-zinc-100 overflow-y-auto [&::-webkit-scrollbar]:hidden pb-28 pt-14">
         <div className="px-5 pb-4 flex items-center gap-3">
           <button onClick={() => setActiveTab('schedule')} className="w-10 h-10 flex items-center justify-center bg-[#27272a] rounded-full active:scale-95 transition-transform"><ChevronLeft size={18} className="text-zinc-300" /></button>
           <div className="flex flex-col">
             <h2 className="text-[18px] font-bold text-white">Lịch thi đấu</h2>
-            <span className="text-[11px] text-[#a1a1aa] font-medium">Thứ {dynamicDatesData[selectedDateIndex]?.day}, {dynamicDatesData[selectedDateIndex]?.date} Tháng {(new Date()).getMonth() + 1}</span>
+            <span className="text-[11px] text-[#a1a1aa] font-medium">Thứ {dynamicDatesData[selectedDateIndex]?.day}, {dynamicDatesData[selectedDateIndex]?.date}/{targetMonth}</span>
           </div>
         </div>
         <div className="flex overflow-x-auto gap-3 px-5 pb-3 mb-3 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth">
